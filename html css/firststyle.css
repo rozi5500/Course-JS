@@ -1,0 +1,35 @@
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+    background: url('skeleton.png') no-repeat right top fixed;
+    margin-right: 200px;
+}
+h1 {
+    color: RGBA (255, 99, 71, 0,5);
+    text-align: center;
+    border: 2px solid Tomato;
+    margin-top: 50px;
+}
+#par2 {
+    text-align: right;
+    color: white;
+    font-size: 25px;
+}
+p.nick {
+    color: rgb(255, 115, 115);
+    text-align: center;
+}
+.size {
+    font-size: 25px;
+}
+p {
+    background-image: url('grunt.jpg');
+    opacity: 0.9;
+    color:rgb(186, 174, 255)
+}
+
+/* This is a comment */
