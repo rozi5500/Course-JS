@@ -47,3 +47,4 @@ select avg(rating) as avgRat,
     
 select * from students limit 3 offset 0;
 
+#fdskl chto
