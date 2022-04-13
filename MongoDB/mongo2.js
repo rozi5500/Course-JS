@@ -1,72 +1,138 @@
 
+// Агрегатні функції
+db.getCollection('teacher').aggregate([
+    {}, // функція спрацьовує перша, вона передає свої данні далі по цепочці вниз
+    {}, // функція бере данні з верхньої функції і працює з ними і передає далі вниз
+    {} // функція теж бере данні працює і передає вниз і так далі
 
-// 1) Знайти всіх дітей в яких сердня оцінка 4.2
-db.getCollection('students').find({ avgScore: 4.2 })
-
-
-// 2) Знайди всіх дітей з 1 класу
-db.getCollection('students').find({ class: 1 })
-
-
-// 3) Знайти всіх дітей які вивчають фізику
-db.getCollection('students').find({ lessons: 'physics' })
+])
 
 
-// 4) Знайти всіх дітей, батьки яких працюють в науці ( scientist )
-// -
+// $group, $sort, $project
+db.getCollection('teacher').aggregate([
+    {
+        $group: {
+            _id: '$payment', // Поле "_id" по якому групуются елементи
+            countOfTeachers: { $sum: 1 } // Рахує скільки об'єктів з таким значенням "payment"
+        }
+    }, // Ці данні передаются в нижню функцію 
+    {
+        $sort: { countOfTeachers: 1 } // Сортування по 'countOfTeachers' по зростанню
+    },
+    {
+        $project: { // це функція яка створює новий об'єкт
+            money: '$_id', // Створює поле "money" яке зсилається на поле "_id"
+            countOfTeachers: 1, // Це поле таким же залишається
+            _id: 0 // Видаляєм поле '_id'
+        }
+    }
+])
 
 
-// 5) Знайти дітей, в яких середня оцінка більша за 4
-db.getCollection('students').find({ avgScore: { $gt: 4 } })
+// $lookup
+db.getCollection('teacher').aggregate([
+    {
+        $lookup: { // Зд'єднує таблиці(коллекції в mongo) між собою анаглог join в SQL 
+            from: 'students', // До якої коллекції підключатись
+            localField: 'class_curator', // Поле по якому з'єднуватись з другою таблицею і яке є локальне
+            foreignField: 'class', // Поле з коллекції яку приєднуєм
+            as: 'kids' // Як назвати 
+        }
+    }
+])
 
 
-// 6) Знайти найкращого учня
-db.getCollection('students').find({}).sort({ avgScore: -1 }).limit(1)
+// $match 
+db.getCollection('teacher').aggregate([
+    {
+        $match: {
+            cars: { $exists: 1 } // Сортування тих в кого є поле cars
+        }
+    },
+    {
+        $lookup: {
+            from: 'students',
+            localField: 'class_curator',
+            foreignField: 'class',
+            as: 'kids'
+        }
+    },
+    {
+        $match: {
+            'kids.name': 'Ivan' // Сортування дітей з іменем Іван
+        }
+    }
+])
 
 
-// 7) Знайти найгіршого учня
-db.getCollection('students').find({}).sort({ avgScore: 1 }).limit(1)
+// $unwind розбиває елменти по об'єктам
+db.getCollection('teacher').aggregate([
+    {
+        $match: {
+            cars: { $exists: 1 }
+        }
+    },
+    {
+        $lookup: {
+            from: 'students',
+            localField: 'class_curator',
+            foreignField: 'class',
+            as: 'kids'
+        }
+    },
+    {
+        $match: {
+            'kids.name': 'Ivan'
+        }
+    },
+    {
+        $unwind: '$kids' // розіб'є "kids" по окремих об'єктах
+    }
+])
 
 
-// 8) Знайти топ 3 учнів
-db.getCollection('students').find({  }).sort({ avgScore: -1 }).limit(3)
+// $min, $max, $avg, $sum
+db.getCollection('teacher').aggregate([
+    {
+        $group: {
+            _id: 0,
+            minPayment: { $min: '$payment' }, // Знаходить мінімальне значення
+            maxPayment: { $max: '$payment' }, // Знаходить максимальне значення
+            avgPayment: { $avg: '$payment' },// Знаходить середнє значення
+            count: { $sum: 1 }, // Знаходить число елементів (1 можна змінювати, таким чином змінювати крок)
+            sum: { $sum: '$payment' } // Знаходить суму з поля "payment" тобто додає всі значення між собою 
+        }
+    }
+])
 
 
-// 9) Знайти середній бал по школі
-// -
+
+// $count
+db.getCollection('teacher').aggregate([
+    {
+        $match: {
+            payment: { $gte: 2500 }
+        }
+    },
+    {
+        $count: 'rich_people' // Створює поле "rich_people" та виводить цифру значень    
+    }                         // які підлягають вище заданими інструкціями
+])
 
 
-// 10) Знайти середній бал дітей які вивчають математику або фізику
-// -
-
-
-// 11) Знайти середній бал по 2 класі
-// -
-
-
-// 12) Знайти дітей з не повною сімєю
-// -
-
-
-// 13) Знайти батьків які не працюють
-// -
-
-
-// 14) Не працюючих батьків влаштувати офіціантами
-// -
-
-
-// 15) Вигнати дітей, які мають середній бал менше ніж 2.5
-db.getCollection('students').remove({ avgScore: { $lt: 2.5 } })
-
-
-// 16) Дітям, батьки яких працюють в освіті ( teacher ) поставити 5
-// -
-
-
-// 17) Знайти дітей які вчаться в початковій школі (до 5 класу) і вивчають фізику ( physics )
-db.getCollection('students').find({ class: { $lt: 5 }, lessons: 'physics' })
-
-
-// 18) Знайти найуспішніший клас
-// -
+// $addFields, $arrayElemAt
+db.getCollection('teacher').aggregate([
+    {
+        $match: { cars: { $exists: 1 } }
+    },
+    {
+        $addFields: { // Додати поле 
+            firstCar: { $arrayElemAt: ['$cars', 0] } // Назва поля "firstCar", з массива "cars" взяти нульовий 0 елемент
+        }
+    },
+    {
+        $addFields: { // Додати поле
+            secondCar: { $arrayElemAt: ['$cars', 1] } // Назва поля "secondCar", з массива "cars" взяти перший 1 елемент
+        }
+    }
+])
