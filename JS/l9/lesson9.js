@@ -1,134 +1,129 @@
-// array = ['Форсунка', 'Арсен', 'Діма','Гєна', 'Рома', 'Анастасія'];
+array = ['Форсунка', 'Арсен', 'Діма','Гєна', 'Рома', 'Анастасія'];
 
+array.sort((a, b) => {
+    return a[0].localeCompare(b[0])
+});
 
+console.log(array);
 
+function orderTour(money, callback) {
+    setTimeout(() => {
+        if (money > 380){
+            return callback(null, {country: 'Turkey', change: money - 380})
+        }
 
-
-
-// array.sort((a, b) => {
-//     return a[0].localeCompare(b[0])
-// });
-
-// console.log(array);
-
-// function orderTour(money, callback) {
-//     setTimeout(() => {
-//         if (money > 380){
-//             return callback(null, {country: 'Turkey', change: money - 380})
-//         }
-
-//         callback('Don\'t have enough money')
-//     }, 1000);
+        callback('Don\'t have enough money')
+    }, 1000);
     
-// }
+}
 
-// function preparing(cb) {
-//     setTimeout(() => {
-//         return 'preparing';
-//     }, 500);
-// }
+function preparing(cb) {
+    setTimeout(() => {
+        return 'preparing';
+    }, 500);
+}
 
-// orderTour(490, (err, data) => {
-//     if(err) {
-//         console.error(err);
-//     }else{
-//         console.log('Країна ', data.country);
-//         console.log(`change ${data.change}`);
-//         preparing((err, data) => {
-//             if (err) {
-//                 console.error(err);
-//             }else{
-//                 console.log(data);
-//             }
-//         });
-//     }
+orderTour(490, (err, data) => {
+    if(err) {
+        console.error(err);
+    }else{
+        console.log('Країна ', data.country);
+        console.log(`change ${data.change}`);
+        preparing((err, data) => {
+            if (err) {
+                console.error(err);
+            }else{
+                console.log(data);
+            }
+        });
+    }
 
     
-// });
+});
 
-// Set 
-// const testSet = new Set();
+Set
+const testSet = new Set();
 
-// testSet.add('Monday');
-// testSet.add('Tuesday');
-// testSet.add({day: 'Monday'});
-// const a = testSet.has('Wednesday');
+testSet.add('Monday');
+testSet.add('Tuesday');
+testSet.add({day: 'Monday'});
+const a = testSet.has('Wednesday');
 
-// console.log(testSet);
-
-
-// // Способы чтобы сделать из Set массив
-// const arrayFromtestSet = [...testSet];
-// const arrayFromtestSet2 = Array.from(testSet);
-
-// arrayFromtestSet.forEach(element => {
-//     console.log(element);
-// });
-
-// console.log(arrayFromtestSet2);
+console.log(testSet);
 
 
-// let x = '431';
+// Способы чтобы сделать из Set массив
+const arrayFromtestSet = [...testSet];
+const arrayFromtestSet2 = Array.from(testSet);
 
-// //Сделать из строки цифру
-// let num = +x;
-// let numFromX = Number(x);
+arrayFromtestSet.forEach(element => {
+    console.log(element);
+});
 
-// console.log(numFromX);
-// console.log(num);
-
-// let n = '536faf';
-
-
-// // Два мотода для удаления букв, после первого 
-// // непонятного елемента удаляет всё
-// const ParseIntN = parseInt(n);
-// const ParseFloatN = parseFloat(n);
-
-// console.log(ParseFloatN);
-// console.log(ParseIntN);
-
-// const num = 35.5616;
-
-// //Обрезает число на количество символов укзанное в аргументах
-// let x = +num.toFixed(2)
-// console.log(x);
+console.log(arrayFromtestSet2);
 
 
-// const map = new Map();
+let x = '431';
 
-// const car = {car: true};
+//Сделать из строки цифру
+let num = +x;
+let numFromX = Number(x);
 
-// map.set('name', 'Wasim');
-// map.set(car, ['Subaru', 'Ferrari']);
+console.log(numFromX);
+console.log(num);
 
-// let name = map.get('name');
-// let car1 = map.get(car);
+let n = '536faf';
 
-// console.log(name);
-// console.log(car1);
+
+// Два мотода для удаления букв, после первого
+// непонятного елемента удаляет всё
+const ParseIntN = parseInt(n);
+const ParseFloatN = parseFloat(n);
+
+console.log(ParseFloatN);
+console.log(ParseIntN);
+
+const num = 35.5616;
+
+// Обрізає число на кількість символів вказане в аргументах
+let x = +num.toFixed(2)
+console.log(x);
+
+
+const map = new Map();
+
+const car = {car: true};
+
+map.set('name', 'Wasim');
+map.set(car, ['Subaru', 'Ferrari']);
+
+let name = map.get('name');
+let car1 = map.get(car);
+
+console.log(name);
+console.log(car1);
 
 
 // Нахождение анаграммы
-// function checkLetters(name, name1) {
-//     count = 0;
-//     for (let i = 0; i < name.length; i++) {
-//         let UpperCaseName = name.toUpperCase();
-//         let UpperCaseName1 = name1.toUpperCase();
-//         let index = UpperCaseName[i];
-//         if (UpperCaseName1.includes(index)) {
-//             count++;
-//         }
+function checkLetters(name, name1) {
+    count = 0;
+    for (let i = 0; i < name.length; i++) {
+        let UpperCaseName = name.toUpperCase();
+        let UpperCaseName1 = name1.toUpperCase();
+        let index = UpperCaseName[i];
+        if (UpperCaseName1.includes(index)) {
+            count++;
+        }
         
-//     };
-//     if (count === name.length) {
-//         console.log(true);
-//     }else{
-//         console.log(false);
-//     }
-// }
+    };
+    if (count === name.length) {
+        console.log(true);
+    }else{
+        console.log(false);
+    }
+}
 
-// checkLetters('Valentin', 'lvinvaten');
+checkLetters('Valentin', 'lvinvaten');
 
 const obj = {
     user: {
@@ -139,10 +134,10 @@ const obj = {
     }
   }
 
-// Синтаксис если мы не уверенны в уровнях вложенности что там есть такой 
-// или иной елемент, если нету то вернёт indefined 
+// Синтаксис на випадок якщо ми не впевнені в уровні вложеності
+// або другий елемент, поверне indefined якщо не знайде елемент
 console.log(obj?.user?.wife?.car?.mark);    
 
-// Старый синтаксис
+// Старий синтаксис
 console.log(obj && obj.user && obj.user.car && obj.user.car.speed)
 
