@@ -14,7 +14,6 @@ db.getCollection('teacher').find({
         { lesson: 'basic' },
         { payment: 2000 }
     ]
-
 })
 
 // and
