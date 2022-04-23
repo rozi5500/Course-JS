@@ -1,138 +1,138 @@
 
 
-// const nums = [510, 514, 445, 20, 1, 57, 3, 41, 42, 5155, 155, 876, 35, 5, 12, 95];
+const nums = [510, 514, 445, 20, 1, 57, 3, 41, 42, 5155, 155, 876, 35, 5, 12, 95];
 
 
-// const sort = nums.sort((a, b) => {
-//     return a - b;
-// })
+const sort = nums.sort((a, b) => {
+    return a - b;
+})
 
-// console.log(sort);
+console.log(sort);
 
-// const filter = nums.filter((num) => {
-//     if (num > 10){
-//         console.log(num);
-//     }
+const filter = nums.filter((num) => {
+    if (num > 10){
+        console.log(num);
+    }
 
-// })
+})
 
 
-// nums.forEach(element => {
-//     document.write(element);
-//     document.write(' ')
-// });
+nums.forEach(element => {
+    document.write(element);
+    document.write(' ')
+});
 
-// const map = nums.map((number) => {
-//     return number * 3;
-// })
+const map = nums.map((number) => {
+    return number * 3;
+})
 
-// console.log(map);
+console.log(map);
 
-// const sum = nums.reduce((acc, number) =>{
-//     console.log(acc, 'acc');
-//     console.log(number, 'num');  
-//     console.log('______');
+const sum = nums.reduce((acc, number) =>{
+    console.log(acc, 'acc');
+    console.log(number, 'num');
+    console.log('______');
     
-//     return acc + number;
-// })
+    return acc + number;
+})
 
-// console.log(sum);
+console.log(sum);
 
-// const strings = ['Jornalist', 'Afraid', 'Turkey', 'Mouse', 'Key', 
-// 'Itor', 'Phone', 'Person', 'Women', 'America', 'Europe', 'Magazine', 'Kid'];
+const strings = ['Jornalist', 'Afraid', 'Turkey', 'Mouse', 'Key',
+'Itor', 'Phone', 'Person', 'Women', 'America', 'Europe', 'Magazine', 'Kid'];
 
-// let filter = strings.sort();
-// filter = strings.reverse();
+let filter = strings.sort();
+filter = strings.reverse();
 
-// console.log(filter);
-// array = [];
+console.log(filter);
+array = [];
 
-// const filter = strings.filter((value) => {
-//     if (value.length > 4) {
-//         array.push(value);
-//     }
+const filter = strings.filter((value) => {
+    if (value.length > 4) {
+        array.push(value);
+    }
     
-// })
+})
 
-// console.log(array);
+console.log(array);
 
-// const changeWords = strings.map((value) => {
-//     return 'Sam says ' + value;
-// })
+const changeWords = strings.map((value) => {
+    return 'Sam says ' + value;
+})
 
-// console.log(changeWords);
+console.log(changeWords);
 
-// const users = [
-//     {name: 'vasya', age: 31, isMarried: false},
-//     {name: 'petya', age: 30, isMarried: true},
-//     {name: 'kolya', age: 29, isMarried: true},
-//     {name: 'olya', age: 28, isMarried: false},
-//     {name: 'max', age: 30, isMarried: true},
-//     {name: 'anya', age: 31, isMarried: false},
-//     {name: 'oleg', age: 28, isMarried: false},
-//     {name: 'andrey', age: 29, isMarried: true},
-//     {name: 'masha', age: 30, isMarried: true},
-//     {name: 'olya', age: 31, isMarried: false},
-//     {name: 'max', age: 31, isMarried: true}
-//  ];
+const users = [
+    {name: 'vasya', age: 31, isMarried: false},
+    {name: 'petya', age: 30, isMarried: true},
+    {name: 'kolya', age: 29, isMarried: true},
+    {name: 'olya', age: 28, isMarried: false},
+    {name: 'max', age: 30, isMarried: true},
+    {name: 'anya', age: 31, isMarried: false},
+    {name: 'oleg', age: 28, isMarried: false},
+    {name: 'andrey', age: 29, isMarried: true},
+    {name: 'masha', age: 30, isMarried: true},
+    {name: 'olya', age: 31, isMarried: false},
+    {name: 'max', age: 31, isMarried: true}
+ ];
 
 
-// const sort = users.sort((a, b) => {
-//     return b.name.length - a.name.length
-// })
+const sort = users.sort((a, b) => {
+    return b.name.length - a.name.length
+})
 
-// console.log(sort);
+console.log(sort);
 
-// let array = [];
+let array = [];
 
-// const index = users.map((value, index) => {
+const index = users.map((value, index) => {
 
-//     return {
-//         name: value.name,
-//         age: value.age,
-//         isMarried: value.isMarried,
-//         id: index + 1 
-//     };
+    return {
+        name: value.name,
+        age: value.age,
+        isMarried: value.isMarried,
+        id: index + 1
+    };
     
 
 
-// })
+})
 
-// console.log(index);
-// console.log(array);
-
-
-// const er = '{"name": true, "age":58}';
-// const object = JSON.parse(er);
-
-// console.log(object);
-
-// console.log(JSON.stringify([new Number(3), new String('false'), new Boolean(false)]));
-// console.log(JSON.stringify([new Number(2), new String('Nick'), new Boolean(true)]));
+console.log(index);
+console.log(array);
 
 
-// const cars = [
-//     {producer:"subaru",model: "wrx",year: 2010, color:"blue",type: "sedan",engine: "ej204x",volume: 2,power: 400},
-//     {producer:"subaru",model: "legacy",year: 2007, color:"silver",type: "sedan",engine: "ez30",volume: 3,power: 250},
-//     {producer:"subaru",model: "tribeca",year: 2011, color:"white",type: "jeep",engine: "ej20",volume: 2,power: 300},
-//     {producer:"subaru",model: "leone",year: 1998, color:"yellow",type: "sedan",engine: "ez20x",volume: 2,power: 140},
-//     {producer:"subaru",model: "impreza",year: 2014, color:"red",type: "sedan",engine: "ej204x",volume: 2,power: 200},
-//     {producer:"subaru",model: "outback",year: 2014, color:"red",type: "hachback",engine: "ej204",volume: 2,power: 165},
-//     {producer:"bmw",model: "115",year: 2013, color:"red",type: "hachback",engine: "f15",volume: 1.5,power: 120},
-//     {producer:"bmw",model: "315",year: 2010, color:"white",type: "sedan",engine: "f15",volume: 1.5, power: 120},
-//     {producer:"bmw",model: "650",year: 2009, color:"black",type: "coupe",engine: "f60",volume: 6,power: 350},
-//     {producer:"bmw",model: "320",year: 2012, color:"red",type: "sedan",engine: "f20",volume: 2,power: 180},
-//     {producer:"mercedes",model: "e200",year: 1990, color:"silver",type: "sedan",engine: "eng200",volume: 2,power: 180},
-//     {producer:"mercedes",model: "e63", year: 2017, color:"yellow",type: "sedan",engine: "amg63",volume:3,power: 400},
-//     {producer:"mercedes",model: "c250",year: 2017, color:"red",type: "sedan",engine: "eng25",volume: 2.5,power: 230}
-//  ];
+const er = '{"name": true, "age":58}';
+const object = JSON.parse(er);
+
+console.log(object);
+
+console.log(JSON.stringify([new Number(3), new String('false'), new Boolean(false)]));
+console.log(JSON.stringify([new Number(2), new String('Nick'), new Boolean(true)]));
+
+
+const cars = [
+    {producer:"subaru",model: "wrx",year: 2010, color:"blue",type: "sedan",engine: "ej204x",volume: 2,power: 400},
+    {producer:"subaru",model: "legacy",year: 2007, color:"silver",type: "sedan",engine: "ez30",volume: 3,power: 250},
+    {producer:"subaru",model: "tribeca",year: 2011, color:"white",type: "jeep",engine: "ej20",volume: 2,power: 300},
+    {producer:"subaru",model: "leone",year: 1998, color:"yellow",type: "sedan",engine: "ez20x",volume: 2,power: 140},
+    {producer:"subaru",model: "impreza",year: 2014, color:"red",type: "sedan",engine: "ej204x",volume: 2,power: 200},
+    {producer:"subaru",model: "outback",year: 2014, color:"red",type: "hachback",engine: "ej204",volume: 2,power: 165},
+    {producer:"bmw",model: "115",year: 2013, color:"red",type: "hachback",engine: "f15",volume: 1.5,power: 120},
+    {producer:"bmw",model: "315",year: 2010, color:"white",type: "sedan",engine: "f15",volume: 1.5, power: 120},
+    {producer:"bmw",model: "650",year: 2009, color:"black",type: "coupe",engine: "f60",volume: 6,power: 350},
+    {producer:"bmw",model: "320",year: 2012, color:"red",type: "sedan",engine: "f20",volume: 2,power: 180},
+    {producer:"mercedes",model: "e200",year: 1990, color:"silver",type: "sedan",engine: "eng200",volume: 2,power: 180},
+    {producer:"mercedes",model: "e63", year: 2017, color:"yellow",type: "sedan",engine: "amg63",volume:3,power: 400},
+    {producer:"mercedes",model: "c250",year: 2017, color:"red",type: "sedan",engine: "eng25",volume: 2.5,power: 230}
+ ];
  
 
-// const moreThan2L = cars.filter((value) => {
-//     if (value.producer === 'bmw' && value.power >= 250) {
-//         console.log(value);
-//     }
-// })
+const moreThan2L = cars.filter((value) => {
+    if (value.producer === 'bmw' && value.power >= 250) {
+        console.log(value);
+    }
+})
 
 
 const usersWithAddress = [
@@ -149,26 +149,26 @@ const usersWithAddress = [
     {id: 11, name: 'max', age: 31, isMarried: true, address: {city: 'Rivne', street: 'Ivana Franka', number: 121}}
 ];
 
-// const sort = usersWithAddress.sort((a, b) => {
-//     if (a.name > b.name){
-//         return 1;
-//     }else{
-//         return -1;
-//     }
-// })
-// console.log(sort);
+const sort = usersWithAddress.sort((a, b) => {
+    if (a.name > b.name){
+        return 1;
+    }else{
+        return -1;
+    }
+})
+console.log(sort);
 
-// const sort = usersWithAddress.sort((a, b) => {
-//     return a.address.number - b.address.number;
-// }) 
+const sort = usersWithAddress.sort((a, b) => {
+    return a.address.number - b.address.number;
+})
 
-// console.log(sort);
+console.log(sort);
 
-// const less30 = usersWithAddress.filter((value) => {
-//     if (value.address.number % 2 === 0){
-//         return value;
-//     }
-// })
+const less30 = usersWithAddress.filter((value) => {
+    if (value.address.number % 2 === 0){
+        return value;
+    }
+})
 
-// console.log(less30);
+console.log(less30);
 
