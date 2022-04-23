@@ -1,56 +1,56 @@
 
 
-// employee1 = {
-//     name: 'Victor',
-//     age: 19,
-//     title: 'Senior'
-// }
+employee1 = {
+    name: 'Victor',
+    age: 19,
+    title: 'Senior'
+}
 
-// employee2 = {
-//     name: 'Nick',
-//     age: 21,
-//     title: 'Trainee'
-// }
+employee2 = {
+    name: 'Nick',
+    age: 21,
+    title: 'Trainee'
+}
 
-// function changeValues(newAge, newTitle) {
-//     console.log('******');
-//     console.log(this);
-//     console.log('******');
-//     this.age = newAge;
-//     this.title = newTitle;
-// }
+function changeValues(newAge, newTitle) {
+    console.log('******');
+    console.log(this);
+    console.log('******');
+    this.age = newAge;
+    this.title = newTitle;
+}
 
-// changeValues.call(employee1, 21, 'Junior');
-// changeValues.apply(employee2, [34, 'Senior'])
+changeValues.call(employee1, 21, 'Junior');
+changeValues.apply(employee2, [34, 'Senior'])
 
-// const copyObj = changeValues.bind(employee2, 34, 'Middle')
-// copyObj()
+const copyObj = changeValues.bind(employee2, 34, 'Middle')
+copyObj()
 
-// console.log(employee1);
-// console.log(employee2);
+console.log(employee1);
+console.log(employee2);
 
 
-// let a = 0;
-// let b = ++a;
+let a = 0;
+let b = ++a;
 
-// console.log(a, 'a');
-// console.log(b, 'b');
+console.log(a, 'a');
+console.log(b, 'b');
 
-// array = [10, 20, 30, 40, 50];
+array = [10, 20, 30, 40, 50];
 
-// function selfStarter(arr, i = 0) {
+function selfStarter(arr, i = 0) {
     
 
-//     if(i >= array.length){
-//         return
-//     }
-//     console.log('/\\/\\ ');
-//     console.log(i);
-//     console.log(array[i]);
-//     selfStarter(arr, ++i);
-// }
+    if(i >= array.length){
+        return
+    }
+    console.log('/\\/\\ ');
+    console.log(i);
+    console.log(array[i]);
+    selfStarter(arr, ++i);
+}
 
-// selfStarter(array);
+selfStarter(array);
 
 
 const users = [
