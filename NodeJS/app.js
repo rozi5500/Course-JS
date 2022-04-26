@@ -14,7 +14,7 @@ console.log(nick);
 
 
 const fs = require('fs'); // виклик бібліотеки fs
-const fs = require('fs'); // Новий варіант який зразу йде з промісами а не з колбеками
+const fs = require('fs/promises'); // Новий варіант який зразу йде з промісами а не з колбеками
 const path = require('path');
 const util = require('util');
 
