@@ -35,7 +35,7 @@ app.get('/cars', (req, res) => {
 app.get('/cars/:indexCar', (req, res) => {
   const {indexCar} = req.params;
 
-  res.json(DBCars[indexCar] || 'Such a car does not exist')
+  res.json(DBCars[indexCar])
 })
 
 

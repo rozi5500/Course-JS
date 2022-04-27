@@ -1,14 +1,14 @@
 module.exports =
 
-  [{
-    "name": "Ira"
-  },
-    {
-      "name": "Roma"
-    },
-    {
-      "name": "Gosha"
-    },
-    {
-      "name": "Petro"
-    }]
+[{
+  "name": "Ira"
+},
+{
+  "name": "Roma"
+},
+{
+  "name": "Gosha"
+},
+{
+  "name": "Petro"
+}]
