@@ -25,7 +25,7 @@ app.get('/users', (req, res) => {
 
 app.get('/users/:indexUser', (req, res) => {
   const {indexUser} = req.params;
-  res.json(DBUsers[indexUser] || 'Such a user does not exist')
+  res.json(DBUsers[indexUser])
 })
 
 app.get('/cars', (req, res) => {
