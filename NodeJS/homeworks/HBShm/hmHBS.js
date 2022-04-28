@@ -25,7 +25,14 @@ app.get('/users', (req, res) => {
 
 app.get('/users/:indexUser', (req, res) => {
   const {indexUser} = req.params;
-  res.json(DBUsers[indexUser])
+
+
+  if(DBUsers[indexUser]){
+    res.json(DBUsers[indexUser])
+  }else{
+    res.status(404).json('User has not been found');
+  }
+
 })
 
 app.get('/cars', (req, res) => {
