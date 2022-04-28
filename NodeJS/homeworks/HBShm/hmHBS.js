@@ -42,7 +42,11 @@ app.get('/cars', (req, res) => {
 app.get('/cars/:indexCar', (req, res) => {
   const {indexCar} = req.params;
 
-  res.json(DBCars[indexCar])
+  if (DBCars[indexCar]){
+    res.json(DBCars[indexCar])
+  }else{
+    res.status(404).json('Car has not been found')
+  }
 })
 
 
