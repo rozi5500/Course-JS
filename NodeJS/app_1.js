@@ -15,10 +15,11 @@ console.log(nick);
 
 const fs = require('fs'); // виклик бібліотеки fs
 const fs = require('fs/promises'); // Новий варіант який зразу йде з промісами а не з колбеками
-const path = require('path');
-const util = require('util');
+const path = require('path'); // для прокладання шляху до файлу/папки
+const util = require('util'); // Можна робити з колбеків проміси і наоборот
 
 const appendFilePromise = util.promisify(fs.appendFile); // Проміфісикує файл, робить проміси
+
 
 fs.mkdir(__dirname + '\\files', (err) => {
   if(err){
