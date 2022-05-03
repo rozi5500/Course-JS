@@ -1,7 +1,7 @@
 
 const express = require('express');
 const { engine } = require('express-handlebars')
-const DBusers = require('./DataBaseUsers/users')
+const DBusers = require('./DataBase/users')
 
 const app = express(); // Створюємо аппку до якого підтягуємо експерс як функцію
 

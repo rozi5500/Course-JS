@@ -1,9 +1,4 @@
-let users = [
-  { id: 0, name: 'Mykola', age: 19 },
-  { id: 1, name: 'Palyanitca', age: 17 },
-  { id: 2, name: 'Dudka', age: 25 },
-  { id: 3, name: 'Compukter', age: 22 }
-]
+const users = require('../DataBase/users');
 
 module.exports = {
 
@@ -34,10 +29,10 @@ module.exports = {
   },
 
   deleteUser: (req, res) => {
-    const { UserId } = req.params;
+    const {UserId} = req.params;
     const currentUser = users[UserId]
 
-    if(!UserId){
+    if (!currentUser) {
       res
         .status(404)
         .json('Such a user does not exist')
@@ -45,8 +40,8 @@ module.exports = {
       return
     }
 
-    users = users.filter(el => el.id != UserId);
+    filtredUsers = users.filter(el => el.id !== UserId);
 
-    res.send(users);
+    res.send(filtredUsers);
   }
 }

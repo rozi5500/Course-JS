@@ -1,11 +1,4 @@
-
-let cars = [
-  { id: 0, name: "BMW", year: 2020 },
-  { id: 1, name: "Mazda", year: 2002 },
-  { id: 2, name: "Porshe", year: 2022 },
-  { id: 3, name: "Toyota", year: 1996 },
-  { id: 4, name: "Range Rover", year: 2015 }
-]
+const cars = require('../DataBase/cars')
 
 module.exports = {
 
@@ -35,10 +28,10 @@ module.exports = {
   },
 
   deleteCar: (req, res) => {
-    const { CarId } = req.params;
+    const {CarId} = req.params;
     const currentCar = cars[CarId];
 
-    if(!currentCar){
+    if (!currentCar) {
       res
         .status(404)
         .json('Such a car does not exist');
@@ -46,8 +39,8 @@ module.exports = {
       return
     }
 
-    cars = cars.filter(el => el.id != CarId);
+    filtredCars = cars.filter(el => el.id !== CarId);
 
-    res.send(cars);
+    res.send(filtredCars);
   }
 }

@@ -1,13 +1,9 @@
-let DBreportMoney = [
-  { id: "0", fuel: 1000 },
-  { id: "1", food: 2700 },
-  { id: "2", newBike: 5000 }
-]
+const moneyReport = require('../DataBase/moneyReport')
 
 module.exports = {
 
   getSpentMoney: (req, res) => {
-    res.json(DBreportMoney)
+    res.json(moneyReport)
   },
 
   createField: (req, res) => {
@@ -15,14 +11,14 @@ module.exports = {
 
     console.log(channelInfo);
 
-    DBreportMoney.push(channelInfo);
+    moneyReport.push(channelInfo);
 
-    res.json(DBreportMoney)
+    res.json(moneyReport)
   },
 
   getOneField: (req, res) => {
     const { FieldId } = req.params;
-    const currentField = DBreportMoney[FieldId];
+    const currentField = moneyReport[FieldId];
 
     if(!currentField){
       res
@@ -36,7 +32,7 @@ module.exports = {
 
   deleteField: (req, res) => {
     const { FieldId } = req.params;
-    const currentID = DBreportMoney[FieldId];
+    const currentID = moneyReport[FieldId];
 
     if(!currentID) {
       res
@@ -45,8 +41,8 @@ module.exports = {
 
       return;
     }
-    DBreportMoney = DBreportMoney.filter(el => el.id != FieldId);
+    filtredReport = moneyReport.filter(el => el.id !== FieldId);
 
-    res.send(DBreportMoney);
+    res.send(filtredReport);
   }
 }
