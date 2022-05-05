@@ -1,47 +1,67 @@
-const users = require('../DataBase/users');
+const User = require('../DataBase/user.scheme');
 
 module.exports = {
 
-  getAllUsers: (req, res) => {
-    res.json(users)
-  },
+  getAllUsers: async (req, res) => {
+    try {
+      const allUsers = await User.find();
 
-  createUser: (req, res) => {
-    const channelInfo = req.body;
-
-    console.log(channelInfo);
-
-    users.push(channelInfo)
-
-    res.json(users);
-  },
-
-  getOneUserByID: (req, res) => {
-    const {UserID} = req.params;
-    const currentUser = users[UserID];
-
-    if (!currentUser) {
-      res.status(404).json('User is not found')
-      return
+      res.json(allUsers)
+    } catch (e) {
+      res.json({
+        message: e
+      });
     }
-
-    res.json(currentUser)
   },
 
-  deleteUser: (req, res) => {
-    const {UserId} = req.params;
-    const currentUser = users[UserId]
+  createUser: async (req, res) => {
+    try {
+      const createdUser = await User.create(req.body);
 
-    if (!currentUser) {
-      res
-        .status(404)
-        .json('Such a user does not exist')
-
-      return
+      res.status(201).json(createdUser); // 201 статус - created
+    } catch (e) {
+      res.json({
+        message: e
+      });
     }
+  },
 
-    filtredUsers = users.filter(el => el.id !== UserId);
+  getOneUserByID: async (req, res) => {
+    try {
+      const {UserID} = req.params;
+      const currentUser = await User.findById(UserID);
 
-    res.send(filtredUsers);
+      if (!currentUser) {
+        res.status(404).json('User is not found')
+        return
+      }
+
+      res.json(currentUser);
+    } catch (e) {
+      res.json({
+        message: e
+      });
+    }
+  },
+
+  deleteUser: async (req, res) => {
+    try {
+      const {UserId} = req.params;
+      const currentUser = await User.findByIdAndDelete(UserId);
+
+      if (!currentUser) {
+        res
+          .status(404)
+          .json('Such a user does not exist')
+
+        return
+      }
+
+      res.send(currentUser);
+    } catch (e) {
+      res.json({
+        message: e
+      });
+    }
   }
 }

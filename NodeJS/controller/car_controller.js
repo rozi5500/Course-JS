@@ -1,46 +1,59 @@
-const cars = require('../DataBase/cars')
+const Car = require('../DataBase/car_scheme');
 
 module.exports = {
 
-  getAllCars: (req, res) => {
-    res.json(cars)
-  },
+  getAllCars: async (req, res) => {
+    try {
+      const allCars = await Car.find();
 
-  getOneCarById: (req, res) => {
-    const {indexCar} = req.params;
-    const currentCar = cars[indexCar];
-
-    if (!currentCar) {
-      res.status(404).json('Car has not been found');
-      return;
+      res.json(allCars);
+    }catch (e) {
+      res.json(e);
     }
-
-    res.json(currentCar);
   },
 
-  createCar: (req, res) => {
-    const channelInfo = req.body;
+  getOneCarById: async (req, res) => {
+    try {
+      const {CarID} = req.params;
+      const currentCar = await Car.findById(CarID);
 
-    console.log(channelInfo);
+      if (!currentCar) {
+        res.status(404).json('Car has not been found');
+        return;
+      }
 
-    cars.push(channelInfo);
-    res.json(cars);
-  },
-
-  deleteCar: (req, res) => {
-    const {CarId} = req.params;
-    const currentCar = cars[CarId];
-
-    if (!currentCar) {
-      res
-        .status(404)
-        .json('Such a car does not exist');
-
-      return
+      res.json(currentCar);
+    } catch (e) {
+      res.json(e);
     }
+  },
 
-    filtredCars = cars.filter(el => el.id !== CarId);
+  createCar: async (req, res) => {
+    try {
+      const createdCar = await Car.create(req.body);
 
-    res.send(filtredCars);
+      res.status(201).json(createdCar);
+    } catch (e) {
+      res.json(e);
+    }
+  },
+
+  deleteCar: async (req, res) => {
+    try {
+      const { CarId } = req.params;
+      const currentCar = await Car.findByIdAndDelete(CarId);
+
+      if (!currentCar) {
+        res
+          .status(404)
+          .json('Such a car does not exist');
+
+        return
+      }
+
+      res.send(currentCar);
+    } catch (e) {
+      res.json(e);
+    }
   }
 }

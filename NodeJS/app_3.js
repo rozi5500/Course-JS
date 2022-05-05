@@ -1,7 +1,8 @@
 const express = require('express');
-const { engine } = require('express-handlebars')
+const { engine } = require('express-handlebars');
+const mongoose = require('mongoose');
 
-const {PORT} = require('./config/config');
+const {PORT, MONGO_URL} = require('./config/config');
 const carRouter = require('./router/car_router');
 const reportRouter = require('./router/money_report_router');
 const userRouter = require('./router/user_route');
@@ -21,6 +22,9 @@ app.use('/cars', carRouter);
 app.use('/users', userRouter); // Використовуй userRouter там де шлях починається на /users
 app.use('/reports', reportRouter);
 
+mongoose.connect(MONGO_URL).then(value => {
+  console.log('Connection successful')
+})
 
 app.listen(PORT, () => { // Запуск сервера по суті
   console.log(`Server is listeting ${PORT} PORT`);
