@@ -2,7 +2,7 @@ const { model, Schema } = require('mongoose');
 
 const Car = new Schema ({
   name: { type: String, trim: true, required: true },
-  model: { type: String, trim: true, unique: true },
+  model: { type: String, trim: true, unique: true, lowercase:true },
   year: { type: Number, default: 2000 },
   power: { type: Number, required: true }
 }, { timestamps: true })

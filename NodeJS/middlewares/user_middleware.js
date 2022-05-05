@@ -54,6 +54,6 @@ const checkValidGender = async (req, res, next) => {
 
 module.exports = {
   checkDublicatedEmail,
-  checkValidGender,
+  checkValidGender
   // checkValidAge не працює :(
 };
