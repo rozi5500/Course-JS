@@ -9,6 +9,10 @@ const checkDublicatedEmail = async (req, res, next) => {
       throw new Error('Email must be written');
     }
 
+    if(!email.includes('@gmail.com')) {
+      throw new Error('Wrong email adress');
+    }
+
     const isEmailOccupied = await User.findOne({email: email.toLowerCase().trim()});
 
     if(isEmailOccupied) {
