@@ -10,6 +10,6 @@ const User = new Schema ({
   age: { type: Number, default: 24 },
   gender: { type: String, trim: true, lowercase: true }
 
-}, { timestamps: true }) // timestamps true створює поля created at, updated at.
+}, { timestamps: true }); // timestamps true створює поля created at, updated at.
 
 module.exports = model('User', User); // модель це річ яка дозволяє робити .findOne() і так далі

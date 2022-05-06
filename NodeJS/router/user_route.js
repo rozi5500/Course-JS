@@ -9,8 +9,9 @@ module.exports = userRouter;
 
 
 userRouter.post('/',
+  userMiddleWare.isNameWritten,
   userMiddleWare.checkDublicatedEmail,
-  // userMiddleWare.checkValidAge, не працює :(
+  userMiddleWare.checkValidAge,
   userMiddleWare.checkValidGender,
   userController.createUser);
 

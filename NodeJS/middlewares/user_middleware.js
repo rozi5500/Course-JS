@@ -1,59 +1,63 @@
 const User = require('../DataBase/user.scheme');
 
+// В МЕНЕ TRY CATCH ЯКЩО ОГОРТАТИ ТО ВИДАЄ ПУСТИЙ ОБ'ЄКТ, САМЕ ЦЬОМУ
+// Я БЕЗ НЬОГО ДЕЯКІ ОБРОБНИКИ РОБИВ
 const checkDublicatedEmail = async (req, res, next) => {
-  try {
     const {email = ''} = req.body;
 
-    if (!email) {
-      res.json(`Email must be written! It's required`);
+    if(!email) {
+      throw new Error('Email must be written');
     }
 
-    const isExistedUser = await User.findOne({email: email.toLowerCase().trim()});
+    const isEmailOccupied = await User.findOne({email: email.toLowerCase().trim()});
 
-    if(isExistedUser) {
-      res.status(409).json(`Email '${email}' is already occupied`); // 409 конфлікт
-      return
+    if(isEmailOccupied) {
+      throw new Error('This email is occupied');
     }
 
-    next() // команда піти далі, воно перекидує на наступний крок в роутері
+    next();
+};
+
+const isNameWritten = async (req, res, next) => {
+    const { name } = req.body;
+
+    if (!name) {
+      throw new Error('Name is required to be written');
+    }
+
+    next();
+}
+
+const checkValidAge = async (req, res, next) => {
+  try {
+    const { age } = req.body;
+
+    if (age <= 0 || age >= 120) {
+      throw new Error('Not valid age');
+    }
+
+    next();
   } catch (e) {
-    res.json(e);
+    console.log(e);
   }
 };
 
-// const checkValidAge = async (req, res, next) => {
-//   try {
-//     const {age} = req.body;
-//
-//     const parsedAge = JSON.parse(age);
-//     const typeOfAge = typeof parsedAge !== "number";
-//     console.log(parsedAge);
-//
-//     if (typeOfAge) {
-//       throw new Error('Age must be a number');
-//     }
-//
-//     next()
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
-
 const checkValidGender = async (req, res, next) => {
   const { gender } = req.body;
-  const genderToLowerCase = gender.toLowerCase()
+  const genderToLowerCase = gender.toLowerCase();
 
   const maleOrFemale = genderToLowerCase !== 'male' && genderToLowerCase !== 'female';
 
   if (maleOrFemale) {
-    res.json('Gender can be only male or female');
+    throw new Error('Not valid gender');
   }
 
-  next()
-}
+  next();
+};
 
 module.exports = {
   checkDublicatedEmail,
-  checkValidGender
-  // checkValidAge не працює :(
+  checkValidGender,
+  checkValidAge,
+  isNameWritten
 };
