@@ -9,7 +9,7 @@ const checkDublicatedEmail = async (req, res, next) => {
       throw new Error('Email must be written');
     }
 
-    if(!email.includes('@gmail.com')) {
+    if(!email.endsWith('@gmail.com')) {
       throw new Error('Wrong email adress');
     }
 
