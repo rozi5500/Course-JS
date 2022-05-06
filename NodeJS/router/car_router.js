@@ -13,6 +13,8 @@ carRouter.post('/',
   carMiddleWare.validYear,
   carController.createCar);
 
+carRouter.patch('/:CarId', carController.updateCar);
+
 carRouter.get('/:CarID', carController.getOneCarById);
 
 carRouter.delete('/:CarId', carController.deleteCar);

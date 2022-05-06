@@ -26,6 +26,14 @@ module.exports = {
     }
   },
 
+  updateUser: async (req, res) => {
+    const { name } = req.body;
+
+    const updatedUser = await User.findOneAndUpdate({name: name});
+
+    res.json(updatedUser);
+  },
+
   getOneUserByID: async (req, res) => {
     try {
       const {UserID} = req.params;

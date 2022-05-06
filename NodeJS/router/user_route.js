@@ -17,6 +17,8 @@ userRouter.post('/',
 
 userRouter.get('/', userController.getAllUsers);
 
+userRouter.patch('/:UserId', userController.updateUser);
+
 userRouter.get('/:UserID', userController.getOneUserByID);
 
 userRouter.delete('/:UserId', userController.deleteUser);

@@ -28,6 +28,14 @@ module.exports = {
     }
   },
 
+  updateCar: async (req, res) => {
+    const {name} = req.body;
+
+    const updatedCar = await Car.findOneAndUpdate({name: name});
+
+    res.json(updatedCar);
+  },
+
   createCar: async (req, res) => {
     try {
       const createdCar = await Car.create(req.body);
