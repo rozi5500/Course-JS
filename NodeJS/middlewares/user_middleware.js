@@ -1,65 +1,105 @@
 const User = require('../DataBase/user.scheme');
+const ApiError = require('../error/ApiError');
 
-// В МЕНЕ TRY CATCH ЯКЩО ОГОРТАТИ ТО ВИДАЄ ПУСТИЙ ОБ'ЄКТ, САМЕ ЦЬОМУ
-// Я БЕЗ НЬОГО ДЕЯКІ ОБРОБНИКИ РОБИВ
+const checkDoesUserExist = async (req, res, next) => {
+  try{
+    const {UserId} = req.params;
+
+    const currentUser = await User.findById(UserId);
+
+    if(!currentUser) {
+      next(new ApiError('User is not found', 404));
+      return;
+    }
+
+    req.user = currentUser; // Робимо новий параметр реквесту - юзер і використовуємо
+    // в контролері для того щоб два рази не шукати юзера в базі, один раз знайшли,
+    // і записали в змінну і змінну використовуємо
+
+    next();
+  } catch (e) {
+    next(e);
+  }
+}
+
 const checkDublicatedEmail = async (req, res, next) => {
+  try{
     const {email = ''} = req.body;
 
     if(!email) {
-      throw new Error('Email must be written');
+      next(new ApiError('Email must be written', 400));// Ми кидаєм вже не звичайну
+      return; // еррору а ту яку створили для того щоб була можливість дати їй статус
+
     }
 
     if(!email.endsWith('@gmail.com')) {
-      throw new Error('Wrong email adress');
+      next(new ApiError('Wrong email adress', 400));
+      return;
     }
 
     const isEmailOccupied = await User.findOne({email: email.toLowerCase().trim()});
 
     if(isEmailOccupied) {
-      throw new Error('This email is occupied');
-    }
-
-    next();
-};
-
-const isNameWritten = async (req, res, next) => {
-    const { name } = req.body;
-
-    if (!name) {
-      throw new Error('Name is required to be written');
-    }
-
-    next();
-}
-
-const checkValidAge = async (req, res, next) => {
-  try {
-    const { age } = req.body;
-
-    if (age <= 0 || age >= 120) {
-      throw new Error('Not valid age');
+      next(new ApiError('This email is occupied', 409));
+      return;
     }
 
     next();
   } catch (e) {
-    console.log(e);
+    next(e);
   }
 };
 
-const checkValidGender = async (req, res, next) => {
-  const { gender } = req.body;
-  const genderToLowerCase = gender.toLowerCase();
+const isNameWritten = (req, res, next) => {
+  try{
+    const { name } = req.body;
 
-  const maleOrFemale = genderToLowerCase !== 'male' && genderToLowerCase !== 'female';
+    if (!name) {
+      next(new ApiError('Name is required to be written', 400));
+      return;
+    }
 
-  if (maleOrFemale) {
-    throw new Error('Not valid gender');
+    next();
+  } catch (e) {
+    next(e);
   }
+}
 
-  next();
+const checkValidAge = (req, res, next) => {
+  try {
+    const { age } = req.body;
+
+    if (age <= 0 || age >= 120) {
+      next(new ApiError('Not valid age', 400));
+      return;
+    }
+
+    next();
+  } catch (e) {
+    next(e);
+  }
+};
+
+const checkValidGender = (req, res, next) => {
+  try{
+    const { gender } = req.body;
+    const genderToLowerCase = gender.toLowerCase();
+
+    const maleOrFemale = genderToLowerCase !== 'male' && genderToLowerCase !== 'female';
+
+    if (maleOrFemale) {
+      next(new ApiError('Not valid gender', 400));
+      return;
+    }
+
+    next();
+  } catch (e) {
+    next(e);
+  }
 };
 
 module.exports = {
+  checkDoesUserExist,
   checkDublicatedEmail,
   checkValidGender,
   checkValidAge,

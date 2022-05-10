@@ -13,10 +13,11 @@ carRouter.post('/',
   carMiddleWare.validYear,
   carController.createCar);
 
+carRouter.get('/pages', carController.getPageCars);
+
+carRouter.all('/:CarId', carMiddleWare.checkDoesCarExist);
+carRouter.get('/:CarId', carController.getOneCarById);
 carRouter.patch('/:CarId', carController.updateCar);
-
-carRouter.get('/:CarID', carController.getOneCarById);
-
 carRouter.delete('/:CarId', carController.deleteCar);
 
 module.exports = carRouter;

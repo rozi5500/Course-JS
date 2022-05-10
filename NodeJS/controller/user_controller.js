@@ -1,75 +1,87 @@
 const User = require('../DataBase/user.scheme');
+const ApiError = require('../error/ApiError');
 
 module.exports = {
 
-  getAllUsers: async (req, res) => {
+  getUserPages: async (req, res, next) => {
     try {
-      const allUsers = await User.find();
+      const { limit, page } = req.query;
 
-      res.json(allUsers)
+      if (limit < 0 || page < 0) {
+        next(new ApiError('Not valid value', 400));
+      }
+
+      const skip = (page - 1) * limit; // page - 1 тому що з фронта нам прийде
+      // не 0 елемент а перший, а нам потрібен нульовий 0
+
+      const pagedUsers = await User.find().limit(limit).skip(skip); // Пагінація
+      const countAllElem = await User.count({}); // Рахує елементи, можна фільтрувати
+      // по якомусь параметру
+
+      res.json({ // такий об'єкт потрібно повертати на фронт
+        page,
+        ElementsOnPage: limit,
+        data: pagedUsers,
+        countAllElem
+      })
     } catch (e) {
-      res.json({
-        message: e
-      });
+      next(e);
     }
   },
 
-  createUser: async (req, res) => {
+  getAllUsers: async (req, res, next) => {
+    try {
+      const users = await User.find();
+
+      res.json(users);
+    } catch (e) {
+      next(e);
+    }
+  },
+
+  createUser: async (req, res, next) => {
     try {
       const createdUser = await User.create(req.body);
 
       res.status(201).json(createdUser); // 201 статус - created
     } catch (e) {
-      res.json({
-        message: e
-      });
+      next(e);
     }
   },
 
-  updateUser: async (req, res) => {
-    const { name } = req.body;
-
-    const updatedUser = await User.findOneAndUpdate({name: name});
-
-    res.json(updatedUser);
-  },
-
-  getOneUserByID: async (req, res) => {
+  updateUser: async (req, res, next) => {
     try {
-      const {UserID} = req.params;
-      const currentUser = await User.findById(UserID);
+      const { name } = req.body;
 
-      if (!currentUser) {
-        res.status(404).json('User is not found')
-        return
-      }
+      const updatedUser = await User.findOneAndUpdate({name: name});
 
-      res.json(currentUser);
+      res.json(updatedUser);
     } catch (e) {
-      res.json({
-        message: e
-      });
+      next(e)
     }
   },
 
-  deleteUser: async (req, res) => {
+  getOneUserByID: (req, res, next) => {
+    try {
+      res.json(req.user); // req.user був створенний в мідлварі для того щоб не шукати юзера 2 рази
+    } catch (e) {
+      next(e);
+    }
+  },
+
+  deleteUser: async (req, res, next) => {
     try {
       const {UserId} = req.params;
       const currentUser = await User.findByIdAndDelete(UserId);
 
       if (!currentUser) {
-        res
-          .status(404)
-          .json('Such a user does not exist')
-
-        return
+        next(new ApiError('Such a user does not exist', 400));
+        return;
       }
 
       res.send(currentUser);
     } catch (e) {
-      res.json({
-        message: e
-      });
+      next(e);
     }
   }
-}
+};

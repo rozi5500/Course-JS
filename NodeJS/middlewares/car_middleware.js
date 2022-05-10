@@ -1,46 +1,81 @@
 const Car = require('../DataBase/car_scheme');
+const ApiError = require('../error/ApiError')
+
+const checkDoesCarExist = async (req, res, next) => {
+  try {
+    const { CarId } = req.params;
+
+    const currentCar = await Car.findById(CarId);
+
+    if (!currentCar) {
+      next(new ApiError('Car is not found', 404));
+      return;
+    }
+
+    req.car = currentCar;
+
+    next();
+  } catch (e) {
+    next(e);
+  }
+}
 
 const checkDublicatedModel = async (req, res, next) => {
-  const {model = ''} = req.body;
+  try{
+    const {model = ''} = req.body;
 
-  if (!model) {
-    throw new Error('Model is required to be written');
+    if (!model) {
+      next(new ApiError('Model is required to be written', 400));
+    }
+
+    const isExistedCar = await Car.findOne({model: model.toLowerCase().trim()});
+
+    if (isExistedCar) {
+      next(new ApiError('This model is occupied', 409));
+    }
+
+    next();
+  } catch (e) {
+    next(e);
   }
-
-  const isExistedCar = await Car.findOne({model: model.toLowerCase().trim()});
-
-  if (isExistedCar) {
-    throw new Error('This model is occupied');
-  }
-
-  next();
 };
 
-const IsNameWritten = async (req, res, next) => {
-  const { name } = req.body;
+const IsNameWritten = (req, res, next) => {
+  try {
+    const { name } = req.body;
 
-  if (!name) {
-    throw new Error('Name is required to be written');
+    if (!name) {
+      next(new ApiError('Name is required to be written', 400));
+      return;
+    }
+
+    next();
+  } catch (e) {
+    next(e);
   }
-
-  next();
 };
 
-const validYear = async (req, res, next) => {
-  const { year } = req.body;
+const validYear = (req, res, next) => {
+  try{
+    const { year } = req.body;
 
-  const parsedYear = JSON.parse(JSON.stringify(year));
-  const lengthOfYear = parsedYear.length;
+    const parsedYear = JSON.parse(JSON.stringify(year));
+    const lengthOfYear = parsedYear.length;
 
-  if (lengthOfYear > 4) {
-    throw new Error('Not valid year');
+    if (lengthOfYear > 4) {
+      next(new ApiError('Not valid year', 400));
+      return;
+    }
+
+    next();
+  } catch (e) {
+    next(e);
   }
-
-  next();
 };
 
 module.exports = {
   checkDublicatedModel,
   IsNameWritten,
-  validYear
-}
+  validYear,
+  checkDoesCarExist
+};
