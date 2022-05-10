@@ -8,7 +8,6 @@ dotenv.config();
 const ApiError = require('./error/ApiError');
 const carRouter = require('./router/car_router');
 const {PORT, MONGO_URL} = require('./config/config');
-const reportRouter = require('./router/money_report_router');
 const userRouter = require('./router/user_route');
 
 const app = express();
@@ -26,7 +25,6 @@ mongoose.connect(MONGO_URL).then(() => {
 
 app.use('/cars', carRouter);
 app.use('/users', userRouter);
-app.use('/reports', reportRouter);
 app.use('*', _ErrorNotFoundHandler);
 app.use(_MainErrorHandler);
 
