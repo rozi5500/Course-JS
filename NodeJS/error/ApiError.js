@@ -4,8 +4,7 @@ class ApiError extends Error {
 
     this.status = status;
 
-    Error.captureStackTrace(this, this.constructor); // Таким чином робимо captureStackTrace
-    // для того щоб бачити в якому місці падає помилка і що за чим падає
+    Error.captureStackTrace(this, this.constructor);
   }
 }
 

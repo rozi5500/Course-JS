@@ -19,8 +19,7 @@ userRouter.get('/', userController.getAllUsers);
 
 userRouter.get('/pages', userController.getUserPages);
 
-userRouter.all('/:UserId', userMiddleWare.checkDoesUserExist); // Ставим мідлвару тут для того щоб перевірити
-// чи є взагалі такий юзер і тільки тоді йдемо далі, щоб не писати в кожні нижче стрічці цю мідлвару
+userRouter.all('/:UserId', userMiddleWare.checkDoesUserExist);
 userRouter.get('/:UserId', userController.getOneUserByID);
 userRouter.patch('/:UserId', userController.updateUser);
 userRouter.delete('/:UserId', userController.deleteUser);

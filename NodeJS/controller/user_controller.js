@@ -11,14 +11,12 @@ module.exports = {
         next(new ApiError('Not valid value', 400));
       }
 
-      const skip = (page - 1) * limit; // page - 1 тому що з фронта нам прийде
-      // не 0 елемент а перший, а нам потрібен нульовий 0
+      const skip = (page - 1) * limit;
 
-      const pagedUsers = await User.find().limit(limit).skip(skip); // Пагінація
-      const countAllElem = await User.count({}); // Рахує елементи, можна фільтрувати
-      // по якомусь параметру
+      const pagedUsers = await User.find().limit(limit).skip(skip);
+      const countAllElem = await User.count({});
 
-      res.json({ // такий об'єкт потрібно повертати на фронт
+      res.json({
         page,
         ElementsOnPage: limit,
         data: pagedUsers,
@@ -43,7 +41,7 @@ module.exports = {
     try {
       const createdUser = await User.create(req.body);
 
-      res.status(201).json(createdUser); // 201 статус - created
+      res.status(201).json(createdUser);
     } catch (e) {
       next(e);
     }
@@ -63,7 +61,7 @@ module.exports = {
 
   getOneUserByID: (req, res, next) => {
     try {
-      res.json(req.user); // req.user був створенний в мідлварі для того щоб не шукати юзера 2 рази
+      res.json(req.user);
     } catch (e) {
       next(e);
     }

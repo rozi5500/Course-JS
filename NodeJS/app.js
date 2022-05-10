@@ -33,7 +33,7 @@ function _ErrorNotFoundHandler(req, res, next) {
 }
 
 
-function _MainErrorHandler(err, req, res, next) { // Функція до якої потрапляють всі еррори
+function _MainErrorHandler(err, req, res, next) {
   res
     .status(err.status || 500)
     .json({

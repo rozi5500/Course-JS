@@ -12,9 +12,7 @@ const checkDoesUserExist = async (req, res, next) => {
       return;
     }
 
-    req.user = currentUser; // Робимо новий параметр реквесту - юзер і використовуємо
-    // в контролері для того щоб два рази не шукати юзера в базі, один раз знайшли,
-    // і записали в змінну і змінну використовуємо
+    req.user = currentUser;
 
     next();
   } catch (e) {
@@ -27,8 +25,8 @@ const checkDublicatedEmail = async (req, res, next) => {
     const {email = ''} = req.body;
 
     if(!email) {
-      next(new ApiError('Email must be written', 400));// Ми кидаєм вже не звичайну
-      return; // еррору а ту яку створили для того щоб була можливість дати їй статус
+      next(new ApiError('Email must be written', 400));
+      return;
 
     }
 
