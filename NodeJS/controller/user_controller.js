@@ -1,5 +1,6 @@
-const User = require('../DataBase/user.scheme');
+const User = require('../DataBase/user_scheme');
 const ApiError = require('../error/ApiError');
+const { authService } = require('../services')
 
 module.exports = {
 
@@ -39,7 +40,9 @@ module.exports = {
 
   createUser: async (req, res, next) => {
     try {
-      const createdUser = await User.create(req.body);
+      const hashPassword = await authService.hashPassword(req.body.password)
+      const createdUser = await User.create({...req.body, password: hashPassword}); // Це працює
+      // як Object.assign(), тобто воно з'єднує данні в один об'єкт
 
       res.status(201).json(createdUser);
     } catch (e) {
@@ -71,11 +74,6 @@ module.exports = {
     try {
       const {UserId} = req.params;
       const currentUser = await User.findByIdAndDelete(UserId);
-
-      if (!currentUser) {
-        next(new ApiError('Such a user does not exist', 400));
-        return;
-      }
 
       res.send(currentUser);
     } catch (e) {

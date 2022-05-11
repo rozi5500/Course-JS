@@ -74,11 +74,6 @@ module.exports = {
       const {CarId} = req.params;
       const currentCar = await Car.findByIdAndDelete(CarId);
 
-      if (!currentCar) {
-        next(new ApiError('Such a car does not exist', 404));
-        return;
-      }
-
       res.send(currentCar);
     } catch (e) {
       next(e);

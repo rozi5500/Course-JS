@@ -7,12 +7,9 @@ const userRouter = Router();
 
 module.exports = userRouter;
 
-
 userRouter.post('/',
-  userMiddleWare.isNameWritten,
-  userMiddleWare.checkValidAge,
-  userMiddleWare.checkDublicatedEmail,
-  userMiddleWare.checkValidGender,
+  userMiddleWare.validateUser,
+  userMiddleWare.checkDuplicatedEmail,
   userController.createUser);
 
 userRouter.get('/', userController.getAllUsers);

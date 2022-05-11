@@ -1,5 +1,6 @@
-const Car = require('../DataBase/car_scheme');
+const { Car } = require('../DataBase');
 const ApiError = require('../error/ApiError')
+const { carValidator } = require('../validators')
 
 const checkDoesCarExist = async (req, res, next) => {
   try {
@@ -20,7 +21,7 @@ const checkDoesCarExist = async (req, res, next) => {
   }
 }
 
-const checkDublicatedModel = async (req, res, next) => {
+const checkDuplicatedModel = async (req, res, next) => {
   try{
     const {model = ''} = req.body;
 
@@ -40,42 +41,25 @@ const checkDublicatedModel = async (req, res, next) => {
   }
 };
 
-const IsNameWritten = (req, res, next) => {
-  try {
-    const { name } = req.body;
-
-    if (!name) {
-      next(new ApiError('Name is required to be written', 400));
-      return;
-    }
-
-    next();
-  } catch (e) {
-    next(e);
-  }
-};
-
-const validYear = (req, res, next) => {
+const validateCar = (req, res, next) => {
   try{
-    const { year } = req.body;
+    const { value, error } = carValidator.CarShemaValidator.validate(req.body);
 
-    const parsedYear = JSON.parse(JSON.stringify(year));
-    const lengthOfYear = parsedYear.length;
-
-    if (lengthOfYear > 4) {
-      next(new ApiError('Not valid year', 400));
+    if(error) {
+      next(new ApiError(error.details[0].message))
       return;
     }
 
-    next();
+    req.body = value;
+
+    next()
   } catch (e) {
     next(e);
   }
-};
+}
 
 module.exports = {
-  checkDublicatedModel,
-  IsNameWritten,
-  validYear,
+  validateCar,
+  checkDuplicatedModel,
   checkDoesCarExist
 };

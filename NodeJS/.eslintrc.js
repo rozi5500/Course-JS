@@ -100,7 +100,7 @@ module.exports = {
     'no-unsafe-finally': 'error',
     'no-unused-expressions': 'error',
     'no-unused-vars': [
-      'warn',
+      'error',
       { varsIgnorePattern: 'ctx' },
     ],
     'no-use-before-define': [

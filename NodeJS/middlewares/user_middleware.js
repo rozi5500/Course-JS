@@ -1,5 +1,6 @@
-const User = require('../DataBase/user.scheme');
+const { User } = require('../DataBase');
 const ApiError = require('../error/ApiError');
+const { userValidator } = require('../validators');
 
 const checkDoesUserExist = async (req, res, next) => {
   try{
@@ -18,9 +19,9 @@ const checkDoesUserExist = async (req, res, next) => {
   } catch (e) {
     next(e);
   }
-}
+};
 
-const checkDublicatedEmail = async (req, res, next) => {
+const checkDuplicatedEmail = async (req, res, next) => {
   try{
     const {email = ''} = req.body;
 
@@ -48,14 +49,16 @@ const checkDublicatedEmail = async (req, res, next) => {
   }
 };
 
-const isNameWritten = (req, res, next) => {
-  try{
-    const { name } = req.body;
+const validateUser = (req, res, next) => {
+  try {
+    const { value, error } = userValidator.UserShemaValidator.validate(req.body); // Валідація через joi
 
-    if (!name) {
-      next(new ApiError('Name is required to be written', 400));
-      return;
+    if (error) {
+      next(new ApiError(error.details[0].message, 400)); // синтаксис доволі виглядить заплутано але
+      return; // таким чином ми показуємо чим шляхом помилку якщо вона є взагалі, якщо ні - йдемо далі
     }
+
+    req.body = value;
 
     next();
   } catch (e) {
@@ -63,43 +66,8 @@ const isNameWritten = (req, res, next) => {
   }
 }
 
-const checkValidAge = (req, res, next) => {
-  try {
-    const { age } = req.body;
-
-    if (age <= 0 || age >= 120) {
-      next(new ApiError('Not valid age', 400));
-      return;
-    }
-
-    next();
-  } catch (e) {
-    next(e);
-  }
-};
-
-const checkValidGender = (req, res, next) => {
-  try{
-    const { gender } = req.body;
-    const genderToLowerCase = gender.toLowerCase();
-
-    const maleOrFemale = genderToLowerCase !== 'male' && genderToLowerCase !== 'female';
-
-    if (maleOrFemale) {
-      next(new ApiError('Not valid gender', 400));
-      return;
-    }
-
-    next();
-  } catch (e) {
-    next(e);
-  }
-};
-
 module.exports = {
+  validateUser,
   checkDoesUserExist,
-  checkDublicatedEmail,
-  checkValidGender,
-  checkValidAge,
-  isNameWritten
+  checkDuplicatedEmail,
 };

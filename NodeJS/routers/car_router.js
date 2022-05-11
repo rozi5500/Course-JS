@@ -8,9 +8,8 @@ const carRouter = Router();
 carRouter.get('/', carController.getAllCars);
 
 carRouter.post('/',
-  carMiddleWare.IsNameWritten,
-  carMiddleWare.checkDublicatedModel,
-  carMiddleWare.validYear,
+  carMiddleWare.validateCar,
+  carMiddleWare.checkDuplicatedModel,
   carController.createCar);
 
 carRouter.get('/pages', carController.getPageCars);

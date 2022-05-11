@@ -6,9 +6,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const ApiError = require('./error/ApiError');
-const carRouter = require('./router/car_router');
-const {PORT, MONGO_URL} = require('./config/config');
-const userRouter = require('./router/user_route');
+const { carRouter, userRouter } = require('./routers'); // Якщо я викликаю папку а не файл,
+// То воно шукає файл index в ній, а в index всі мої роутери
+const { PORT, MONGO_URL } = require('./config/config');
 
 const app = express();
 
@@ -20,7 +20,7 @@ app.set('view engine', '.hbs');
 app.set('views', './static');
 
 mongoose.connect(MONGO_URL).then(() => {
-  console.log('Connection successful')
+  console.log('Connection to MongoDB is successfully')
 });
 
 app.use('/cars', carRouter);
@@ -33,6 +33,7 @@ function _ErrorNotFoundHandler(req, res, next) {
 }
 
 
+// eslint-disable-next-line no-unused-vars
 function _MainErrorHandler(err, req, res, next) {
   res
     .status(err.status || 500)
