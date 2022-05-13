@@ -1,6 +1,6 @@
 const { Car } = require('../DataBase');
 const { ApiError } = require('../error')
-const { carValidator, queryValidator } = require('../validators')
+const { carValidator, queryValidator, updateCarValidator } = require('../validators')
 const { codeStatus, carErrorEnum } = require('../constants')
 
 const checkDoesCarExist = async (req, res, next) => {
@@ -55,6 +55,23 @@ const validateCar = (req, res, next) => {
   }
 };
 
+const carUpdateValidator = (req, res, next) => {
+  try {
+    const { error, value } = updateCarValidator.CarSchemaUpdateValidator.validate(req.body);
+
+    if(error) {
+      next(new ApiError(error.details[0].message, codeStatus.bad_request_status));
+      return;
+    }
+
+    req.body = Object.assign(req.body, value);
+
+    next();
+  } catch (e) {
+    next(e);
+  }
+}
+
 const validateCarQuery = (req, res, next) => {
   try {
     const { error } = queryValidator.querySchemaValidator.validate(req.query);
@@ -73,6 +90,7 @@ const validateCarQuery = (req, res, next) => {
 module.exports = {
   validateCar,
   validateCarQuery,
+  carUpdateValidator,
   checkDuplicatedModel,
   checkDoesCarExist
 };

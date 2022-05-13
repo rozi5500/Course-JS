@@ -47,10 +47,12 @@ module.exports = {
 
   updateUser: async (req, res, next) => {
     try {
-      const { name, email, password, gender } = req.body;
+      const { UserId } = req.params;
+      const { name, email, password, gender, age } = req.body;
 
-      const updatedUser = await User.findOneAndUpdate({
+      const updatedUser = await User.findOneAndUpdate(UserId, {
         name,
+        age,
         email,
         password,
         gender

@@ -43,9 +43,16 @@ module.exports = {
 
   updateCar: async (req, res, next) => {
     try {
-      const {name} = req.body;
+      const { CarId } = req.params;
 
-      const updatedCar = await Car.findOneAndUpdate({ name });
+      const { name, year, model, power } = req.body;
+
+      const updatedCar = await Car.findByIdAndUpdate(CarId , {
+        name,
+        model,
+        year,
+        power
+      });
 
       res.json(updatedCar);
     } catch (e) {

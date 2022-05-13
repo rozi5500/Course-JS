@@ -20,7 +20,7 @@ userRouter.all('/:UserId', user_middleware.checkDoesUserExist);
 userRouter.get('/:UserId', user_controller.getOneUserByID);
 
 userRouter.patch('/:UserId',
-  user_middleware.validateUser,
+  user_middleware.userUpdateValidator,
   user_middleware.checkDuplicatedEmail,
   user_controller.updateUser);
 

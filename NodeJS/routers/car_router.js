@@ -18,7 +18,7 @@ carRouter.all('/:CarId', car_middleware.checkDoesCarExist);
 carRouter.get('/:CarId', car_controller.getOneCarById);
 
 carRouter.patch('/:CarId',
-  car_middleware.validateCar,
+  car_middleware.carUpdateValidator,
   car_middleware.checkDuplicatedModel,
   car_controller.updateCar);
 

@@ -1,6 +1,6 @@
 const { User } = require('../DataBase');
 const { ApiError } = require('../error');
-const { userValidator, queryValidator } = require('../validators');
+const { userValidator, queryValidator, updateUserValidator } = require('../validators');
 const { userErrorEnum, codeStatus } = require('../constants')
 
 const checkDoesUserExist = async (req, res, next) => {
@@ -61,6 +61,23 @@ const validateUser = (req, res, next) => {
   }
 };
 
+const userUpdateValidator = (req, res, next) => {
+  try{
+    const { value, error } = updateUserValidator.UserSchemaUpdateValidator.validate(req.body);
+
+    if(error) {
+      next(new ApiError(error.details[0].message, codeStatus.bad_request_status));
+      return;
+    }
+
+    req.body = Object.assign(req.body, value);
+
+    next()
+  }catch (e) {
+    next(e);
+  }
+}
+
 const validateUserQuery = (req, res, next) => {
   try {
     const { error } = queryValidator.querySchemaValidator.validate(req.query);
@@ -80,6 +97,7 @@ const validateUserQuery = (req, res, next) => {
 module.exports = {
   validateUser,
   validateUserQuery,
+  userUpdateValidator,
   checkDoesUserExist,
   checkDuplicatedEmail,
 };
