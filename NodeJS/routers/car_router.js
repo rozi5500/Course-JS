@@ -1,22 +1,27 @@
 const { Router } = require('express');
 
-const carController = require('../controller/car_controller');
-const carMiddleWare = require('../middlewares/car_middleware');
+const { car_controller } = require('../controller');
+const { car_middleware } = require('../middlewares');
 
 const carRouter = Router();
 
-carRouter.get('/', carController.getAllCars);
+carRouter.get('/', car_controller.getAllCars);
 
 carRouter.post('/',
-  carMiddleWare.validateCar,
-  carMiddleWare.checkDuplicatedModel,
-  carController.createCar);
+  car_middleware.validateCar,
+  car_middleware.checkDuplicatedModel,
+  car_controller.createCar);
 
-carRouter.get('/pages', carController.getPageCars);
+carRouter.get('/pages', car_middleware.validateCarQuery, car_controller.getPageCars);
 
-carRouter.all('/:CarId', carMiddleWare.checkDoesCarExist);
-carRouter.get('/:CarId', carController.getOneCarById);
-carRouter.patch('/:CarId', carController.updateCar);
-carRouter.delete('/:CarId', carController.deleteCar);
+carRouter.all('/:CarId', car_middleware.checkDoesCarExist);
+carRouter.get('/:CarId', car_controller.getOneCarById);
+
+carRouter.patch('/:CarId',
+  car_middleware.validateCar,
+  car_middleware.checkDuplicatedModel,
+  car_controller.updateCar);
+
+carRouter.delete('/:CarId', car_controller.deleteCar);
 
 module.exports = carRouter;

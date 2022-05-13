@@ -1,16 +1,12 @@
-const User = require('../DataBase/user_scheme');
-const ApiError = require('../error/ApiError');
-const { authService } = require('../services')
+const { User } = require('../DataBase');
+const { authService } = require('../services');
+const { codeStatus } = require('../constants')
 
 module.exports = {
 
   getUserPages: async (req, res, next) => {
     try {
       const { limit, page } = req.query;
-
-      if (limit < 0 || page < 0) {
-        next(new ApiError('Not valid value', 400));
-      }
 
       const skip = (page - 1) * limit;
 
@@ -41,10 +37,9 @@ module.exports = {
   createUser: async (req, res, next) => {
     try {
       const hashPassword = await authService.hashPassword(req.body.password)
-      const createdUser = await User.create({...req.body, password: hashPassword}); // Це працює
-      // як Object.assign(), тобто воно з'єднує данні в один об'єкт
+      const createdUser = await User.create({...req.body, password: hashPassword});
 
-      res.status(201).json(createdUser);
+      res.status(codeStatus.created_status).json(createdUser);
     } catch (e) {
       next(e);
     }
@@ -52,9 +47,14 @@ module.exports = {
 
   updateUser: async (req, res, next) => {
     try {
-      const { name } = req.body;
+      const { name, email, password, gender } = req.body;
 
-      const updatedUser = await User.findOneAndUpdate({name: name});
+      const updatedUser = await User.findOneAndUpdate({
+        name,
+        email,
+        password,
+        gender
+      });
 
       res.json(updatedUser);
     } catch (e) {

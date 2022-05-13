@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 const { constants } = require('../constants')
 
-const UserShemaValidator = Joi.object({
+const UserSchemaValidator = Joi.object({
   name: Joi.string().alphanum().min(2).max(25).required().trim(),
   email: Joi.string().email().required().trim().lowercase(),
   age: Joi.number().min(2).max(120),
@@ -16,5 +16,5 @@ const UserShemaValidator = Joi.object({
 });
 
 module.exports = {
-  UserShemaValidator
+  UserSchemaValidator
 };

@@ -1,19 +1,19 @@
 const bcrypt = require('bcrypt');
 
-const ApiError = require('../error/ApiError');
+const { ApiError } = require('../error');
+const { userErrorEnum, codeStatus } = require('../constants')
 
 async function comparePasswords(hashedPassword, password) {
   const IsPasswordEqual = await bcrypt.compare(password, hashedPassword);
 
   if (!IsPasswordEqual) {
-    throw new ApiError('The password is not correct', 400);
+    throw new ApiError(userErrorEnum.WrongPassword, codeStatus.bad_request_status);
   }
 }
 
 function hashPassword(password) {
-  return bcrypt.hash(password, 10); // Сама функція яка хешує підсолений пароль
-} // пароль солять тому що якщо не солити і базі будуть два юзера і більше з однаковими паролями
-// то їхні хеші також будуть однаковими, а підсолені хешовані паролі - ні
+  return bcrypt.hash(password, 10);
+}
 
 module.exports = {
   comparePasswords,

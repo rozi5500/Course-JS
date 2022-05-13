@@ -1,6 +1,7 @@
 const { User } = require('../DataBase');
-const ApiError = require('../error/ApiError');
-const { userValidator } = require('../validators');
+const { ApiError } = require('../error');
+const { userValidator, queryValidator } = require('../validators');
+const { userErrorEnum, codeStatus } = require('../constants')
 
 const checkDoesUserExist = async (req, res, next) => {
   try{
@@ -9,7 +10,12 @@ const checkDoesUserExist = async (req, res, next) => {
     const currentUser = await User.findById(UserId);
 
     if(!currentUser) {
-      next(new ApiError('User is not found', 404));
+      next(new ApiError(userErrorEnum.NotFoundUser, codeStatus.not_found_status));
+      return;
+    }
+
+    if(UserId.length !== 24) {
+      next(new ApiError(userErrorEnum.NotValidID, codeStatus.bad_request_status));
       return;
     }
 
@@ -25,21 +31,10 @@ const checkDuplicatedEmail = async (req, res, next) => {
   try{
     const {email = ''} = req.body;
 
-    if(!email) {
-      next(new ApiError('Email must be written', 400));
-      return;
-
-    }
-
-    if(!email.endsWith('@gmail.com')) {
-      next(new ApiError('Wrong email adress', 400));
-      return;
-    }
-
     const isEmailOccupied = await User.findOne({email: email.toLowerCase().trim()});
 
     if(isEmailOccupied) {
-      next(new ApiError('This email is occupied', 409));
+      next(new ApiError(userErrorEnum.OccupiedEmail, codeStatus.conflict_status));
       return;
     }
 
@@ -51,11 +46,11 @@ const checkDuplicatedEmail = async (req, res, next) => {
 
 const validateUser = (req, res, next) => {
   try {
-    const { value, error } = userValidator.UserShemaValidator.validate(req.body); // Валідація через joi
+    const { value, error } = userValidator.UserSchemaValidator.validate(req.body);
 
     if (error) {
-      next(new ApiError(error.details[0].message, 400)); // синтаксис доволі виглядить заплутано але
-      return; // таким чином ми показуємо чим шляхом помилку якщо вона є взагалі, якщо ні - йдемо далі
+      next(new ApiError(error.details[0].message, 400));
+      return;
     }
 
     req.body = value;
@@ -64,10 +59,27 @@ const validateUser = (req, res, next) => {
   } catch (e) {
     next(e);
   }
+};
+
+const validateUserQuery = (req, res, next) => {
+  try {
+    const { error } = queryValidator.querySchemaValidator.validate(req.query);
+
+    if (error) {
+      next(new ApiError(error.details[0].message, 400));
+      return;
+    }
+
+    next()
+  }catch (e) {
+    next(e);
+  }
 }
+
 
 module.exports = {
   validateUser,
+  validateUserQuery,
   checkDoesUserExist,
   checkDuplicatedEmail,
 };

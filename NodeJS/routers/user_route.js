@@ -1,22 +1,27 @@
-const {Router} = require('express');
+const { Router } = require('express');
 
-const userController = require('../controller/user_controller');
-const userMiddleWare = require('../middlewares/user_middleware');
+const { user_controller } = require('../controller');
+const { user_middleware } = require('../middlewares');
 
 const userRouter = Router();
 
 module.exports = userRouter;
 
 userRouter.post('/',
-  userMiddleWare.validateUser,
-  userMiddleWare.checkDuplicatedEmail,
-  userController.createUser);
+  user_middleware.validateUser,
+  user_middleware.checkDuplicatedEmail,
+  user_controller.createUser);
 
-userRouter.get('/', userController.getAllUsers);
+userRouter.get('/', user_controller.getAllUsers);
 
-userRouter.get('/pages', userController.getUserPages);
+userRouter.get('/pages',user_middleware.validateUserQuery, user_controller.getUserPages);
 
-userRouter.all('/:UserId', userMiddleWare.checkDoesUserExist);
-userRouter.get('/:UserId', userController.getOneUserByID);
-userRouter.patch('/:UserId', userController.updateUser);
-userRouter.delete('/:UserId', userController.deleteUser);
+userRouter.all('/:UserId', user_middleware.checkDoesUserExist);
+userRouter.get('/:UserId', user_controller.getOneUserByID);
+
+userRouter.patch('/:UserId',
+  user_middleware.validateUser,
+  user_middleware.checkDuplicatedEmail,
+  user_controller.updateUser);
+
+userRouter.delete('/:UserId', user_controller.deleteUser);

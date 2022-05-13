@@ -1,6 +1,7 @@
 const { Car } = require('../DataBase');
-const ApiError = require('../error/ApiError')
-const { carValidator } = require('../validators')
+const { ApiError } = require('../error')
+const { carValidator, queryValidator } = require('../validators')
+const { codeStatus, carErrorEnum } = require('../constants')
 
 const checkDoesCarExist = async (req, res, next) => {
   try {
@@ -9,7 +10,7 @@ const checkDoesCarExist = async (req, res, next) => {
     const currentCar = await Car.findById(CarId);
 
     if (!currentCar) {
-      next(new ApiError('Car is not found', 404));
+      next(new ApiError(carErrorEnum.NotFoundCar, codeStatus.not_found_status));
       return;
     }
 
@@ -24,15 +25,11 @@ const checkDoesCarExist = async (req, res, next) => {
 const checkDuplicatedModel = async (req, res, next) => {
   try{
     const {model = ''} = req.body;
-
-    if (!model) {
-      next(new ApiError('Model is required to be written', 400));
-    }
-
+    
     const isExistedCar = await Car.findOne({model: model.toLowerCase().trim()});
 
     if (isExistedCar) {
-      next(new ApiError('This model is occupied', 409));
+      next(new ApiError(carErrorEnum.OccupiedModel, codeStatus.conflict_status));
     }
 
     next();
@@ -43,7 +40,7 @@ const checkDuplicatedModel = async (req, res, next) => {
 
 const validateCar = (req, res, next) => {
   try{
-    const { value, error } = carValidator.CarShemaValidator.validate(req.body);
+    const { value, error } = carValidator.CarSchemaValidator.validate(req.body);
 
     if(error) {
       next(new ApiError(error.details[0].message))
@@ -56,10 +53,26 @@ const validateCar = (req, res, next) => {
   } catch (e) {
     next(e);
   }
+};
+
+const validateCarQuery = (req, res, next) => {
+  try {
+    const { error } = queryValidator.querySchemaValidator.validate(req.query);
+
+    if (error) {
+      next(new ApiError(error.details[0].message, codeStatus.bad_request_status));
+      return;
+    }
+
+    next()
+  }catch (e) {
+    next(e);
+  }
 }
 
 module.exports = {
   validateCar,
+  validateCarQuery,
   checkDuplicatedModel,
   checkDoesCarExist
 };

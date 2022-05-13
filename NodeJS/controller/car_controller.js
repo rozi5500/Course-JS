@@ -1,5 +1,4 @@
-const Car = require('../DataBase/car_scheme');
-const ApiError = require('../error/ApiError');
+const { Car } = require('../DataBase');
 
 module.exports = {
 
@@ -17,11 +16,6 @@ module.exports = {
     try {
       const { limit, page } = req.query;
       const skip = (page - 1) * limit;
-
-      if (limit < 0 || page < 0) {
-        next(new ApiError('Not valid value', 400));
-        return;
-      }
 
       const pagedCars = await Car.find().limit(limit).skip(skip)
       const countElems = await Car.count();
@@ -51,7 +45,7 @@ module.exports = {
     try {
       const {name} = req.body;
 
-      const updatedCar = await Car.findOneAndUpdate({name: name});
+      const updatedCar = await Car.findOneAndUpdate({ name });
 
       res.json(updatedCar);
     } catch (e) {

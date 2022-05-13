@@ -5,10 +5,10 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const ApiError = require('./error/ApiError');
-const { carRouter, userRouter } = require('./routers'); // Якщо я викликаю папку а не файл,
-// То воно шукає файл index в ній, а в index всі мої роутери
+const { ApiError } = require('./error');
+const { carRouter, userRouter } = require('./routers');
 const { PORT, MONGO_URL } = require('./config/config');
+const { codeStatus, userErrorEnum } = require('./constants')
 
 const app = express();
 
@@ -29,7 +29,7 @@ app.use('*', _ErrorNotFoundHandler);
 app.use(_MainErrorHandler);
 
 function _ErrorNotFoundHandler(req, res, next) {
-  next(new ApiError('Not found', 404));
+  next(new ApiError(userErrorEnum.NotFound, codeStatus.not_found_status));
 }
 
 
@@ -44,6 +44,6 @@ function _MainErrorHandler(err, req, res, next) {
 }
 
 app.listen(PORT, () => {
-  console.log(`Server is listeting ${PORT} PORT`);
+  console.log(`Server is listening ${PORT} PORT`);
 });
 
