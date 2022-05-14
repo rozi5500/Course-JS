@@ -1,20 +1,21 @@
-const { User } = require('../DataBase');
 const { ApiError } = require('../error');
-const { userValidator, queryValidator, updateUserValidator } = require('../validators');
+const { User } = require('../DataBase');
+const { userValidator, updateUserValidator } = require('../validators');
 const { userErrorEnum, codeStatus } = require('../constants')
 
+
 const checkDoesUserExist = async (req, res, next) => {
-  try{
-    const {UserId} = req.params;
+  try {
+    const { UserId } = req.params;
 
     const currentUser = await User.findById(UserId);
 
-    if(!currentUser) {
+    if (!currentUser) {
       next(new ApiError(userErrorEnum.NotFoundUser, codeStatus.not_found_status));
       return;
     }
 
-    if(UserId.length !== 24) {
+    if (UserId.length !== 24) {
       next(new ApiError(userErrorEnum.NotValidID, codeStatus.bad_request_status));
       return;
     }
@@ -28,12 +29,12 @@ const checkDoesUserExist = async (req, res, next) => {
 };
 
 const checkDuplicatedEmail = async (req, res, next) => {
-  try{
-    const {email = ''} = req.body;
+  try {
+    const { email = '' } = req.body;
 
-    const isEmailOccupied = await User.findOne({email: email.toLowerCase().trim()});
+    const isEmailOccupied = await User.findOne({ email: email.toLowerCase().trim() });
 
-    if(isEmailOccupied) {
+    if (isEmailOccupied) {
       next(new ApiError(userErrorEnum.OccupiedEmail, codeStatus.conflict_status));
       return;
     }
@@ -61,7 +62,7 @@ const validateUser = (req, res, next) => {
   }
 };
 
-const userUpdateValidator = (req, res, next) => {
+const UserUpdateValidator = (req, res, next) => {
   try{
     const { value, error } = updateUserValidator.UserSchemaUpdateValidator.validate(req.body);
 
@@ -76,28 +77,12 @@ const userUpdateValidator = (req, res, next) => {
   }catch (e) {
     next(e);
   }
-}
-
-const validateUserQuery = (req, res, next) => {
-  try {
-    const { error } = queryValidator.querySchemaValidator.validate(req.query);
-
-    if (error) {
-      next(new ApiError(error.details[0].message, 400));
-      return;
-    }
-
-    next()
-  }catch (e) {
-    next(e);
-  }
-}
+};
 
 
 module.exports = {
   validateUser,
-  validateUserQuery,
-  userUpdateValidator,
   checkDoesUserExist,
   checkDuplicatedEmail,
+  UserUpdateValidator
 };

@@ -1,7 +1,8 @@
 const { Car } = require('../DataBase');
 const { ApiError } = require('../error')
-const { carValidator, queryValidator, updateCarValidator } = require('../validators')
+const { carValidator, updateCarValidator } = require('../validators')
 const { codeStatus, carErrorEnum } = require('../constants')
+
 
 const checkDoesCarExist = async (req, res, next) => {
   try {
@@ -20,13 +21,13 @@ const checkDoesCarExist = async (req, res, next) => {
   } catch (e) {
     next(e);
   }
-}
+};
 
 const checkDuplicatedModel = async (req, res, next) => {
-  try{
-    const {model = ''} = req.body;
-    
-    const isExistedCar = await Car.findOne({model: model.toLowerCase().trim()});
+  try {
+    const { model = '' } = req.body;
+
+    const isExistedCar = await Car.findOne({ model: model.toLowerCase().trim() });
 
     if (isExistedCar) {
       next(new ApiError(carErrorEnum.OccupiedModel, codeStatus.conflict_status));
@@ -39,10 +40,10 @@ const checkDuplicatedModel = async (req, res, next) => {
 };
 
 const validateCar = (req, res, next) => {
-  try{
+  try {
     const { value, error } = carValidator.CarSchemaValidator.validate(req.body);
 
-    if(error) {
+    if (error) {
       next(new ApiError(error.details[0].message))
       return;
     }
@@ -55,9 +56,9 @@ const validateCar = (req, res, next) => {
   }
 };
 
-const carUpdateValidator = (req, res, next) => {
-  try {
-    const { error, value } = updateCarValidator.CarSchemaUpdateValidator.validate(req.body);
+const CarUpdateValidator = (req, res, next) => {
+  try{
+    const { value, error } = updateCarValidator.CarSchemaUpdateValidator.validate(req.body);
 
     if(error) {
       next(new ApiError(error.details[0].message, codeStatus.bad_request_status));
@@ -66,31 +67,16 @@ const carUpdateValidator = (req, res, next) => {
 
     req.body = Object.assign(req.body, value);
 
-    next();
-  } catch (e) {
-    next(e);
-  }
-}
-
-const validateCarQuery = (req, res, next) => {
-  try {
-    const { error } = queryValidator.querySchemaValidator.validate(req.query);
-
-    if (error) {
-      next(new ApiError(error.details[0].message, codeStatus.bad_request_status));
-      return;
-    }
-
     next()
   }catch (e) {
     next(e);
   }
-}
+};
+
 
 module.exports = {
   validateCar,
-  validateCarQuery,
-  carUpdateValidator,
   checkDuplicatedModel,
-  checkDoesCarExist
+  checkDoesCarExist,
+  CarUpdateValidator
 };

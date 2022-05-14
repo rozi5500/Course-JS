@@ -1,7 +1,7 @@
 const { Router } = require('express');
 
 const { user_controller } = require('../controller');
-const { user_middleware } = require('../middlewares');
+const { user_middleware, common_middleware } = require('../middlewares');
 
 const userRouter = Router();
 
@@ -12,15 +12,13 @@ userRouter.post('/',
   user_middleware.checkDuplicatedEmail,
   user_controller.createUser);
 
-userRouter.get('/', user_controller.getAllUsers);
-
-userRouter.get('/pages',user_middleware.validateUserQuery, user_controller.getUserPages);
+userRouter.get('/', common_middleware.validateQuery, user_controller.getAllUsers);
 
 userRouter.all('/:UserId', user_middleware.checkDoesUserExist);
 userRouter.get('/:UserId', user_controller.getOneUserByID);
 
 userRouter.patch('/:UserId',
-  user_middleware.userUpdateValidator,
+  user_middleware.UserUpdateValidator,
   user_middleware.checkDuplicatedEmail,
   user_controller.updateUser);
 

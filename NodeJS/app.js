@@ -13,9 +13,9 @@ const { codeStatus, userErrorEnum } = require('./constants')
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
-app.engine('.hbs', engine({defaultLayout: false}));
+app.engine('.hbs', engine({ defaultLayout: false }));
 app.set('view engine', '.hbs');
 app.set('views', './static');
 
@@ -31,7 +31,6 @@ app.use(_MainErrorHandler);
 function _ErrorNotFoundHandler(req, res, next) {
   next(new ApiError(userErrorEnum.NotFound, codeStatus.not_found_status));
 }
-
 
 // eslint-disable-next-line no-unused-vars
 function _MainErrorHandler(err, req, res, next) {
