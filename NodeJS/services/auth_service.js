@@ -19,9 +19,7 @@ function hashPassword(password) {
 }
 
 function generateToken(encodeData) {
-  // Генерація access token'а
-  const access_token = jwt.sign(encodeData, ACCESS_TOKEN_SECRET_KEY, { expiresIn: '14m' });
-  // Генерація refresh token'а який являється одноразовим
+  const access_token = jwt.sign(encodeData, ACCESS_TOKEN_SECRET_KEY, { expiresIn: '15m' });
   const refresh_token = jwt.sign(encodeData, REFRESH_TOKEN_SECRET_KEY, { expiresIn: '30m' });
 
   return {
@@ -32,17 +30,15 @@ function generateToken(encodeData) {
 
 function validateToken(token, tokenType = tokenTypeEnum.ACCESS) {
   try{
-    let secretWord = ACCESS_TOKEN_SECRET_KEY; // Ставимо секретне слово таке як зараз в access_token
+    let secretWord = ACCESS_TOKEN_SECRET_KEY;
 
     if(tokenType === tokenTypeEnum.REFRESH) {
-      secretWord = REFRESH_TOKEN_SECRET_KEY; // Змінюємо секретне слово з access_token'a на refresh_token
+      secretWord = REFRESH_TOKEN_SECRET_KEY;
     }
 
-    // Для перевірки передаємо самий токен і секретний або публічний ключ по якому ми
-    // Розшифруємо цей токен
     return jwt.verify(token, secretWord)
-  } catch (e) { // В сервісах не прописується зазвичай try catch, але тут ми прописуємо для того, щоб
-    throw new ApiError(e.message || commonErrorEnum.InvalidToken, codeStatus.unauthorized_status); // кинути свій статус, саме 401
+  } catch (e) {
+    throw new ApiError(e.message || commonErrorEnum.InvalidToken, codeStatus.unauthorized_status);
   }
 }
 

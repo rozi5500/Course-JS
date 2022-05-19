@@ -21,12 +21,9 @@ const checkDuplicatedEmail = async (req, res, next) => {
   }
 };
 
-// Функція для динамічних значень яка повертає middleware
-// eslint-disable-next-line arrow-body-style
 const getDynamicallyUser = (paramName = '_id', where = 'body', DBField = paramName) => {
   return async (req, res, next) => {
     try {
-      // Динамічне значення в [] тому що там може бути params, body, query
       const reqElement = req[where];
 
       if (!reqElement || typeof reqElement !== 'object') {
@@ -34,16 +31,12 @@ const getDynamicallyUser = (paramName = '_id', where = 'body', DBField = paramNa
         return;
       }
 
-      // Теж саме, тут може бути пошук по різним полям, email, name і т.д
       const param = reqElement[paramName];
 
-      // Саме такий синтаксис [key]: value, щоб ключ був динамічний
-      // +password для того, щоб коли воно буде зрівнювати пароль з body і юзера який в базі
-      // то щоб пароль відображався
       const user = await User.findOne({ [DBField]: param }).select("+password");
 
       if (!user) {
-        next(new ApiError('User not found', 404));
+        next(new ApiError(userErrorEnum.NotFoundUser, codeStatus.not_found_status));
         return;
       }
 
@@ -61,7 +54,7 @@ const validateUser = (req, res, next) => {
     const { value, error } = userValidator.UserSchemaValidator.validate(req.body);
 
     if (error) {
-      next(new ApiError(error.details[0].message, 400));
+      next(new ApiError(error.details[0].message, codeStatus.bad_request_status));
       return;
     }
 

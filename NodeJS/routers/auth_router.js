@@ -11,8 +11,13 @@ authRouter.post('/login',
   auth_controller.login);
 
 authRouter.post('/logout',
-  auth_middleware.checkAccessToken, // Для того, щоб знати хто робить logout, хто виходить з платформи
-  auth_controller.logout)
+  auth_middleware.checkAccessToken,
+  auth_controller.logout);
+
+authRouter.post('/refresh',
+  auth_middleware.checkRefreshToken,
+  auth_controller.refresh
+);
 
 
 module.exports = authRouter;
