@@ -6,9 +6,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const { ApiError } = require('./error');
-const { carRouter, userRouter } = require('./routers');
+const { authRouter, carRouter, userRouter } = require('./routers');
 const { PORT, MONGO_URL } = require('./config/config');
-const { codeStatus, userErrorEnum } = require('./constants')
+const { codeStatus, commonErrorEnum } = require('./constants')
 
 const app = express();
 
@@ -23,13 +23,14 @@ mongoose.connect(MONGO_URL).then(() => {
   console.log('Connection to MongoDB is successfully')
 });
 
+app.use('/auth', authRouter);
 app.use('/cars', carRouter);
 app.use('/users', userRouter);
 app.use('*', _ErrorNotFoundHandler);
 app.use(_MainErrorHandler);
 
 function _ErrorNotFoundHandler(req, res, next) {
-  next(new ApiError(userErrorEnum.NotFound, codeStatus.not_found_status));
+  next(new ApiError(commonErrorEnum.NotFound, codeStatus.not_found_status));
 }
 
 // eslint-disable-next-line no-unused-vars

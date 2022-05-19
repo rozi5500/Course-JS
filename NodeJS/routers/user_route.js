@@ -2,6 +2,7 @@ const { Router } = require('express');
 
 const { user_controller } = require('../controller');
 const { user_middleware, common_middleware } = require('../middlewares');
+const { reqValuesEnum } = require('../constants')
 
 const userRouter = Router();
 
@@ -14,7 +15,7 @@ userRouter.post('/',
 
 userRouter.get('/', common_middleware.validateQuery, user_controller.getAllUsers);
 
-userRouter.all('/:UserId', user_middleware.checkDoesUserExist);
+userRouter.all('/:UserId', user_middleware.getDynamicallyUser('UserId', reqValuesEnum.params, '_id'));
 userRouter.get('/:UserId', user_controller.getOneUserByID);
 
 userRouter.patch('/:UserId',
