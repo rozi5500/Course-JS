@@ -26,7 +26,7 @@ const logout = async (req, res, next) => {
 
     await OAuth.deleteMany({_user_id: authUser._id})
 
-    res.json('Ok')
+    res.json('Logout is successful')
 
   } catch (e) {
     next(e);
@@ -35,16 +35,19 @@ const logout = async (req, res, next) => {
 
 const refresh = async (req, res, next) => {
   try {
-    const token = req.get('Authorization')
+    const refresh_token = req.get('Authorization');
+    const authUser = req.authUser;
 
-    await OAuth.deleteOne({refresh_token: token});
+    await OAuth.deleteOne({refresh_token});
 
-    const generatedTokens = authService.generateToken()
+    const generatedTokens = authService.generateToken({userId: authUser._id});
 
-    // Я НЕ ЗНАЮ ЯК ДАЛІ ЮЗЕРА ВЗЯТИ
-    const model = await OAuth.create({_user_id: user._id, ...generatedTokens})
-    res.json(model)
+    await OAuth.create({_user_id: authUser._id, ...generatedTokens});
 
+    res.json({
+      authUser,
+      ...generatedTokens
+    });
   } catch (e) {
     next(e);
   }

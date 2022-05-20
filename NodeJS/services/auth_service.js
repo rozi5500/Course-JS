@@ -19,7 +19,7 @@ function hashPassword(password) {
 }
 
 function generateToken(encodeData) {
-  const access_token = jwt.sign(encodeData, ACCESS_TOKEN_SECRET_KEY, { expiresIn: '15m' });
+  const access_token = jwt.sign(encodeData, ACCESS_TOKEN_SECRET_KEY, { expiresIn: '15s' });
   const refresh_token = jwt.sign(encodeData, REFRESH_TOKEN_SECRET_KEY, { expiresIn: '30m' });
 
   return {

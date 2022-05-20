@@ -43,7 +43,7 @@ async function checkRefreshToken(req, res, next) {
 
     const tokenData = await OAuth.findOne({ refresh_token }).populate('_user_id');
 
-    req.authUser = tokenData;
+    req.authUser = tokenData._user_id;
 
     next()
   } catch (e) {
