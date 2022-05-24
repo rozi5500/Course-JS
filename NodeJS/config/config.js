@@ -4,4 +4,9 @@ module.exports = {
 
   ACCESS_TOKEN_SECRET_KEY: 'logic',
   REFRESH_TOKEN_SECRET_KEY: 'power',
+
+  SENDER_EMAIL: process.env.SENDER_EMAIL,
+  SENDER_EMAIL_PASSWORD: process.env.SENDER_EMAIL_PASSWORD,
+
+  FRONTEND_URL: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
 };
