@@ -29,7 +29,7 @@ const sendMail = async (emailReceiver, emailAction, helpingBoard = {}) => {
   // цю силку в змінні frontEndUrl
   Object.assign(helpingBoard, { frontEndUrl: FRONTEND_URL })
 
-  const html = await templateRenderer.render(templateObject.templateName, helpingBoard);
+  const html = await templateRenderer.render(templateObject.emailTemplateName, helpingBoard);
 
   const transporter = nodemailer.createTransport({
     service: 'gmail', // Сервіс який надсилає почту
