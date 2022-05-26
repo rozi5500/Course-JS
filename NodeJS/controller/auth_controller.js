@@ -1,14 +1,10 @@
-const { authService } = require('../services');
-const { OAuth } = require('../DataBase');
-const { emailService } = require('../services');
-const { emailActionsEnum } = require('../constants')
+const { authService, emailService } = require('../services');
+const { OAuth, ActionToken, User } = require('../DataBase');
+const { actionTypesEnum, emailActionsEnum } = require('../constants')
 
 const login = async (req, res, next) => {
   try {
     const { user, body: { password } } = req;
-
-    // В аргументах пишемо - кому відправити почту і тип події яку ми відправляємо
-    await emailService.sendMail('kolyabogach12@gmail.com', emailActionsEnum.carArrived)
 
     await authService.comparePasswords(user.password, password);
 
@@ -56,11 +52,74 @@ const refresh = async (req, res, next) => {
   } catch (e) {
     next(e);
   }
+};
+
+const changePassword = async (req, res, next) => {
+  try {
+    const { authUser, body: { newPassword } } = req;
+
+    const hashedPassword = await authService.hashPassword(newPassword);
+    await User.updateOne({ _id: authUser._id }, { password: hashedPassword });
+
+    res.json('Password is changed')
+  } catch (e) {
+    next(e);
+  }
+}
+
+const forgetPassword = async (req, res, next) => {
+  try {
+    const { user } = req;
+
+    // Генеруємо Action Token
+    const token = authService.generateActionToken({ userId: user._id });
+
+    // Створюємо в колекцію actionToken юзера з action токеном і видом події
+    await ActionToken.create({
+      _user_id: user._id,
+      token,
+      actionType: actionTypesEnum.forgot_password
+    })
+
+    // Генеруємо лінку для фронтенда яка прийде юзеру на почту
+    const forgottenPassUrl = `http://localhost:3000/password/forgot?token=${token}`;
+
+    // Відправляємо емеїл юзеру на почту з силкою для відновлення пароля
+    await emailService.sendMail('kolyabogach12@gmail.com',
+      emailActionsEnum.forgot_password,
+      {
+        forgottenPassUrl,
+        userName: user.name
+      });
+
+    res.json('ok')
+  } catch (e) {
+    next(e);
+  }
+}
+
+const setNewPassword = async (req, res, next) => {
+  try {
+    const { body, user } = req;
+
+    const hashedPassword = await authService.hashPassword(body.password);
+
+    await User.updateOne({ _id: user._id }, { password: hashedPassword });
+    await OAuth.deleteMany({ _user_id: user._id });
+    await ActionToken.deleteMany({ _user_id: user._id });
+
+    res.json('Success')
+  } catch (e) {
+    next(e);
+  }
 }
 
 
 module.exports = {
   login,
   logout,
-  refresh
+  refresh,
+  changePassword,
+  forgetPassword,
+  setNewPassword
 };

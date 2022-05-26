@@ -4,6 +4,7 @@ module.exports = {
 
   ACCESS_TOKEN_SECRET_KEY: 'logic',
   REFRESH_TOKEN_SECRET_KEY: 'power',
+  ACTION_TOKEN_SECRET_KEY: 'action',
 
   SENDER_EMAIL: process.env.SENDER_EMAIL,
   SENDER_EMAIL_PASSWORD: process.env.SENDER_EMAIL_PASSWORD,

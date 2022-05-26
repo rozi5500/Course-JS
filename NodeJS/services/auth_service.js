@@ -2,8 +2,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const { ApiError } = require('../error');
-const { commonErrorEnum, userErrorEnum, codeStatus, tokenTypeEnum } = require('../constants')
-const { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } = require('../config/config')
+const { commonErrorEnum, userErrorEnum, codeStatus, tokenTypeEnum, actionTypesEnum } = require('../constants')
+const { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY, ACTION_TOKEN_SECRET_KEY } = require('../config/config')
 
 
 async function comparePasswords(hashedPassword, password) {
@@ -18,8 +18,12 @@ function hashPassword(password) {
   return bcrypt.hash(password, 10);
 }
 
+function generateActionToken(encodeData = {}) {
+  return jwt.sign(encodeData, ACTION_TOKEN_SECRET_KEY, { expiresIn: '24h' })
+}
+
 function generateToken(encodeData) {
-  const access_token = jwt.sign(encodeData, ACCESS_TOKEN_SECRET_KEY, { expiresIn: '15s' });
+  const access_token = jwt.sign(encodeData, ACCESS_TOKEN_SECRET_KEY, { expiresIn: '15m' });
   const refresh_token = jwt.sign(encodeData, REFRESH_TOKEN_SECRET_KEY, { expiresIn: '30m' });
 
   return {
@@ -29,11 +33,15 @@ function generateToken(encodeData) {
 }
 
 function validateToken(token, tokenType = tokenTypeEnum.ACCESS) {
-  try{
+  try {
     let secretWord = ACCESS_TOKEN_SECRET_KEY;
 
-    if(tokenType === tokenTypeEnum.REFRESH) {
+    if (tokenType === tokenTypeEnum.REFRESH) {
       secretWord = REFRESH_TOKEN_SECRET_KEY;
+    }
+
+    if (tokenType === actionTypesEnum.forgot_password) {
+      secretWord = ACTION_TOKEN_SECRET_KEY;
     }
 
     return jwt.verify(token, secretWord)
@@ -47,5 +55,6 @@ module.exports = {
   comparePasswords,
   hashPassword,
   generateToken,
+  generateActionToken,
   validateToken
 };

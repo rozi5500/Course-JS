@@ -1,8 +1,8 @@
 const { authService } = require('../services');
-const { authValidator } = require('../validators')
+const { authValidator, emailValidator, passwordValidator } = require('../validators')
 const { ApiError } = require('../error')
-const { OAuth } = require('../DataBase')
-const { tokenTypeEnum, codeStatus, commonErrorEnum } = require('../constants')
+const { OAuth, ActionToken } = require('../DataBase')
+const { tokenTypeEnum, codeStatus } = require('../constants')
 
 
 async function checkAccessToken(req, res, next) {
@@ -51,18 +51,73 @@ async function checkRefreshToken(req, res, next) {
   }
 }
 
+function checkActionToken(actionType) {
+  return async function(req, res, next) {
+    try {
+      const { token } = req.body;
+
+      if (!token) {
+        next(new ApiError('No token', codeStatus.forbidden));
+        return;
+      }
+
+      authService.validateToken(token, actionType);
+
+      const tokenData = await ActionToken.findOne({ token, actionType }).populate('_user_id')
+
+      req.user = tokenData._user_id;
+
+      next();
+    } catch (e) {
+      next(e);
+    }
+  }
+}
+
 function validateLogin(req, res, next) {
   try {
     const { error, value } = authValidator.loginSchema.validate(req.body);
 
     if (error) {
-      next(new ApiError(error.details[0].message, 400));
+      next(new ApiError(error.details[0].message, codeStatus.bad_request_status));
       return;
     }
 
-    req.body = value
+    req.body = value;
 
-    next()
+    next();
+  } catch (e) {
+    next(e);
+  }
+}
+
+function validateEmail(req, res, next) {
+  try {
+    const { error, value } = emailValidator.forgetPassSchema.validate(req.body);
+
+    if (error) {
+      next(new ApiError(error.details[0].message, codeStatus.bad_request_status));
+      return;
+    }
+
+    req.body = value;
+
+    next();
+  } catch (e) {
+    next(e);
+  }
+}
+
+function validatePassword(req, res, next) {
+  try {
+    const { error } = passwordValidator.PasswordSchema.validate(req.body);
+
+    if (error) {
+      next(new ApiError(error.details[0].message, codeStatus.bad_request_status));
+      return;
+    }
+
+    next();
   } catch (e) {
     next(e);
   }
@@ -71,6 +126,9 @@ function validateLogin(req, res, next) {
 
 module.exports = {
   checkAccessToken,
+  checkActionToken,
   checkRefreshToken,
-  validateLogin
+  validateLogin,
+  validateEmail,
+  validatePassword
 };

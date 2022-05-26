@@ -1,5 +1,6 @@
 module.exports = {
   welcome: 'welcome',
-  carArrived: 'car-arrived'
+  carArrived: 'car-arrived',
+  forgot_password: 'ForgotPassword'
 };
 
