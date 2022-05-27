@@ -25,7 +25,7 @@ authRouter.post('/refresh',
 authRouter.post('/password/forgot',
   auth_middleware.validateEmail,
   user_middleware.getDynamicallyUser('email'),
-  auth_controller.forgetPassword
+  auth_controller.forgetPassword('kolyabogach12@gmail.com')
 );
 
 authRouter.patch('/password/reset',
