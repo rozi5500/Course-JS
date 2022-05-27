@@ -93,7 +93,7 @@ function validateLogin(req, res, next) {
 
 function validateEmail(req, res, next) {
   try {
-    const { error, value } = emailValidator.forgetPassSchema.validate(req.body);
+    const { error, value } = emailValidator.EmailSchema.validate(req.body);
 
     if (error) {
       next(new ApiError(error.details[0].message, codeStatus.bad_request_status));

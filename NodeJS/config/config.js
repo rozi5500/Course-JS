@@ -8,6 +8,7 @@ module.exports = {
 
   SENDER_EMAIL: process.env.SENDER_EMAIL,
   SENDER_EMAIL_PASSWORD: process.env.SENDER_EMAIL_PASSWORD,
+  EMAIL_RECEIVER: 'kolyabogach12@gmail.com',
 
-  FRONTEND_URL: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+  FRONTEND_URL: 'http://localhost:3000'
 };

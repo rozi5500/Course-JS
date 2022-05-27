@@ -1,6 +1,7 @@
 const { authService, emailService } = require('../services');
 const { OAuth, ActionToken, User } = require('../DataBase');
 const { actionTypesEnum, emailActionsEnum } = require('../constants')
+const { FRONTEND_URL, EMAIL_RECEIVER } = require("../config/config");
 
 const login = async (req, res, next) => {
   try {
@@ -82,10 +83,10 @@ const forgetPassword = async (req, res, next) => {
     })
 
     // Генеруємо лінку для фронтенда яка прийде юзеру на почту
-    const forgottenPassUrl = `http://localhost:3000/password/forgot?token=${token}`;
+    const forgottenPassUrl = `${FRONTEND_URL}/password/forgot?token=${token}`;
 
     // Відправляємо емеїл юзеру на почту з силкою для відновлення пароля
-    await emailService.sendMail('kolyabogach12@gmail.com',
+    await emailService.sendMail(EMAIL_RECEIVER,
       emailActionsEnum.forgot_password,
       {
         forgottenPassUrl,
