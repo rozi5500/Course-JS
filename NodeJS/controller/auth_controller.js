@@ -68,36 +68,34 @@ const changePassword = async (req, res, next) => {
   }
 }
 
-function forgetPassword(email_receiver) {
-  return async function(req, res, next) {
-    try {
-      const { user } = req;
+const forgetPassword = async (req, res, next) => {
+  try {
+    const { user } = req;
 
-      // Генеруємо Action Token
-      const token = authService.generateActionToken({ userId: user._id });
+    // Генеруємо Action Token
+    const token = authService.generateActionToken({ userId: user._id });
 
-      // Створюємо в колекцію actionToken юзера з action токеном і видом події
-      await ActionToken.create({
-        _user_id: user._id,
-        token,
-        actionType: actionTypesEnum.forgot_password
-      })
+    // Створюємо в колекцію actionToken юзера з action токеном і видом події
+    await ActionToken.create({
+      _user_id: user._id,
+      token,
+      actionType: actionTypesEnum.forgot_password
+    })
 
-      // Генеруємо лінку для фронтенда яка прийде юзеру на почту
-      const forgottenPassUrl = `${FRONTEND_URL}/password/forgot?token=${token}`;
+    // Генеруємо лінку для фронтенда яка прийде юзеру на почту
+    const forgottenPassUrl = `${FRONTEND_URL}/password/forgot?token=${token}`;
 
-      // Відправляємо емеїл юзеру на почту з силкою для відновлення пароля
-      await emailService.sendMail(email_receiver,
-        emailActionsEnum.forgot_password,
-        {
-          forgottenPassUrl,
-          userName: user.name
-        });
+    // Відправляємо емеїл юзеру на почту з силкою для відновлення пароля
+    await emailService.sendMail(user.email,
+      emailActionsEnum.forgot_password,
+      {
+        forgottenPassUrl,
+        userName: user.name
+      });
 
-      res.json('ok')
-    } catch (e) {
-      next(e);
-    }
+    res.json('ok')
+  } catch (e) {
+    next(e);
   }
 }
 
