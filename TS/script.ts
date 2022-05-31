@@ -1,130 +1,215 @@
+let isBool: boolean = true;
+let num: number = 10;
+let str: string = 'str';
+let n: null = null;
+let u: undefined = undefined;
 
-function sum(a: number, b: number) { // Типізація елементів
-  const sumOfNums = a + b;
-  return sumOfNums.toString();
+// Функція нічого не повертає, це і є тип функції void - без повертання
+const sayHello = (user: string): void => {
+  console.log('Hello', user);
 }
 
-let sum1 = sum(10, 900);
+// Array type - ми говоримо що тип даних будуть числа, і ці числа будуть находитись в масиві
+let list: number[] = [1, 2, 3];
 
-console.log(sum1);
+// Generic type - за допомогою ключового слова Array ми задаємо тип даних і після цього
+// За допомогою <number> описуємо тип даних які будуть в масиві
+let list1: Array<number> = [1, 2, 3];
+
+// Tuple type - якщо ми хочемо, щоб в масиві були декілька типів даних,
+// Але в тому порядку в якому записані типи даних
+let x: [number, string] = [15, 'hi'];
+
+// Any type - він приймає будь-які типи даних
+let y: any[] = [902, 'mouse'];
+let ex: Array<any> = ['keyboard', 51];
+
+let notSure: any = true;
+notSure = 85;
+notSure = 'changed';
+notSure = undefined;
 
 
-interface IUser { // Типізація яка буде на виході
-  firstName: string,
-  lastName: string,
-  age: number | boolean, // Тут можна вказувати декілька значень
-  car: boolean
+
+// never type - коли функція нескінчена або видає помилку,
+// never не повертає результат
+const err = (): never => {
+  throw new Error()
 }
 
-function createUser(firstName: string, lastName: string, age?: number): IUser { // age? знак питання для необов'язкового
-// вводу елемента. IUser для типізації на вихідних елементах
-  console.log('was');
+// тип type який по суті створює кастомний тип
+type Name = string;
+let a: Name = 42 // Error
 
-  return {
-    firstName,
-    lastName,
-    age,
-    car: true
+// enum
+enum partsOfBody {
+  rightHand = 2,
+  leftHand = 4,
+  rightLeg = 6,
+  leftLeg = 8
+}
+
+// таким чином можемо доступатись до енамки по індексу та отримати ключ
+partsOfBody[2]
+partsOfBody[4]
+partsOfBody.rightLeg
+partsOfBody.leftLeg
+
+// Argument type
+const createPassword = (name: string, age: number | boolean) => {
+  return `${name}${age}`;
+}
+
+// Default value
+const createPassword = (name: string = 'User', age: number | boolean = 24) => {
+  return `${name}${age}`;
+}
+
+// Optional argument age? - тобто не обов'язкове поле для заповнення
+const createPassword = (name: string = 'User', age?: number) => {
+  return `${name}${age}`;
+}
+
+// Створення кастомного типа на практиці, щоб не повторювати код
+// І в user є поле company а в admin замість цього поля функція, тому
+// Записуємо таким чином в type smth?: type
+type Human = {
+  name: string,
+  age: number,
+  company?: boolean,
+  sayHello?: () => string
+}
+
+// Описування типів даних в об'єкті
+const user: Human = {
+  name: 'Nick',
+  age: 4,
+  company: false
+};
+
+const admin: Human = {
+  name: 'Petro',
+  age: 22,
+
+  sayHello(): string {
+    return `Hello ${ this.name }`;
   }
-}
-
-let user = createUser('Victor', 'Jora');
-
-console.log(user);
-
-
-function filterUserBuilder(filterObj: IUser): [IUser]{ // Повинно вернути хоча б якесь значення
-  return []
-}
-
-function filterUserBuilder(filterObj: IUser): IUser[]{ // Це спрацює нормально без питань
-  return []
-}
-function filterUserBuilder(filterObj: IUser): Array<string>{ // Поверне массив стрічок
-  return []
-}
-
-
-function filterUserBuilder(filterObj: Partial<IUser>): Array<string | number> { // Partial дозволяє приймати не весь
-  // класс а тільки його частинку і повертати його частину Array<string | number> - такий синтакс дозволяє вказувати
-  // декілька значень
-  return ['Hello', 'World', 1]
-}
-
-filterUserBuilder({firstName: 'Victor'})
-
-
-// enum використовується для переліку чогось що надалі буде використовуватись
-enum ESubject {
-  JAVA_SCRIPT = 'JavaScript',
-  NODE_JS = 'NodeJS'
 }
 
 class User {
-  name: string; // В классах обов'язково вказувати ці поля, без них не спрацює
-  course: number;
-  wife: boolean
+  // Тут ми описуємо властивості класа
+  public name: string // public стоїть по дефолту. Це означає що до цієї властивості можна отримати свободний доступ
+  private age: number // private не може бути доступний за межами класа
+  protected company: boolean // protected доступ до елементів з цим модифікатором можуть отримати тільки спадкоємці
+  readonly pass: string // readonly тільки доступний для прочитання
 
-  constructor(name: string, course: number){
+  // Тут ми добавляємо можливість приймати ці властивості при ініціалізації
+  constructor(name: string, age: number, company: boolean, pass: string) {
     this.name = name;
-    this.course = course;
-    this.wife = true;
-  }
-
-  public closeSession(): any{
-    this.buyKursova(ESubject.JAVA_SCRIPT); // Таким чином вводиться значення з enum
-    this.playGames();
-  }
-
-  public helpFriend(friendName: string): void{
-    console.log(`I have helped ${friendName}`);
-    this.playGames();
-  }
-
-
-  public sayCourse(): void{ // По дефолту стоїть public, це можна не вказувати
-    console.log(`Hi, I study ${this.course} course`)
-  }
-
-  protected playGames(): void { // Протектед можна використовувати в рамках об'єкта де він був створений та в нащадках
-    console.log(`${this.name} is playing games`)
-  }
-
-  private buyKursova(subject: ESubject): any{ // Може викликатись тільки в межах об'єкта де він був створений
-    // ESubject це enum який був оголешний вище
-    return {
-      subject,
-      done: true
-    }
+    this.age = age;
+    this.company = company;
+    this.pass = pass;
   }
 }
 
-class Human extends User{
-  constructor(name: string, course: number) {
-    super(name, course);
-  }
+class User {
 
-  public walkWithFriends(): void{ // таким чином цією функцією можна викликати protected функцію будучи нащадком
-    this.sayCourse();
-    this.playGames();
+  // Для оптимізації кода можна записувати таким чином, тільки треба обов'язково
+  // вказувати модифікатор, типу public, private тощо
+  constructor(
+    public name: string,
+    public age: number,
+    public company: boolean,
+    public pass: string) {}
+}
+
+class User {
+  private age: number = 9;
+
+  constructor(public name: string ) {}
+
+  // Функція яка змінює значення елемента в якого private модифікатор
+  myAge(age: number) {
+    this.age = age;
   }
 }
 
+class User {
 
-const roma = new User('Romchik', 4);
-const roman = new Human('Roman Yuriyovich', 10)
+  static secret = 12345; // static property, тобто його видно в класі без створення екземпляру
 
+  constructor(public name: string, public age: number) {
+  }
 
-// Це тіпа для динамічного взяття ключу але воно чомусь не працює
-function getKey(key: keyof IUser): any{
-  return user[key]
+  createPass(): string {
+    return `${ this.name }${ User.secret }`;
+  }
 }
 
-getKey('firstName')
+// Це оболочка в якій зберігаються ці змінні
+namespace Util {
+  export const password: number = 50194;
+  const name: string = 'gsneam';
 
-roma.sayCourse();
-roman.walkWithFriends();
-roman.helpFriend('Nikita');
-roma.closeSession();
-roman.walkWithFriends();
+  export const getHardPass = (): string => {
+    return `${name}${password}`
+  }
+}
 
+// interface це сутність типу type, але з більшими можливостями
+interface User {
+  readonly name: string, // readonly - тобто ми не можемо змінювати name
+  age: number,
+  company?: boolean,
+  [propName: string]: any; // На той випадок якщо об'єкт буде розширятись
+}
+
+// Використання інтерфейсу в об'єкті
+const worker: User = {
+  name: 'Tolyan',
+  age: 44,
+}
+
+// Інтерфейси також можуть наслідуватись
+interface Admin extends User {
+  getPass(): string
+}
+
+// Використання інтерфейсу в класі
+class Tolik implements Admin{
+  name: 'Tolik';
+  age: 29;
+
+  getPass(): string {
+    return `${this.name}${this.age}`
+  }
+}
+
+// Generic type - синтаксис за допомогою якого тип змінної замість T підставиться автоматично
+const getter = <T>(data: T): T => data;
+
+// Тут замість Т буде string і таким чином ми можем взяти s.length
+const s = getter('fsfsrs');
+console.log(s.length)
+
+// А тут замість Т буде тип number і синтаксис JS не дає нам взяти length
+// тим самим запобігає появи помилки
+const x = getter(15001);
+console.log(x)
+
+interface User {
+  name: string
+}
+
+// Utility Readonly
+const user : Readonly<User> = {
+  name: 'Gerax'
+}
+
+interface Props {
+  a?: number
+  b?: number
+}
+
+const obj: Props = { a: 10 } // Ok
+const obj1: Required<Props> = { a: 10, b: 510 } // А тут обов'язково стають всі поля
