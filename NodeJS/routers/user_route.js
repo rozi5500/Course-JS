@@ -6,8 +6,6 @@ const { reqValuesEnum } = require('../constants')
 
 const userRouter = Router();
 
-module.exports = userRouter;
-
 userRouter.post('/',
   user_middleware.validateUser,
   user_middleware.checkDuplicatedEmail,
@@ -24,3 +22,7 @@ userRouter.patch('/:UserId',
   user_controller.updateUser);
 
 userRouter.delete('/:UserId', user_controller.deleteUser);
+
+userRouter.patch('/:UserId/photo', user_middleware.checkCorrectImage)
+
+module.exports = userRouter;

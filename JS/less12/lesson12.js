@@ -1,4 +1,4 @@
-// Recursiona
+// Recursion
 // GitHub
 
 array = [-145, -4, -716, -19, -15, -53];

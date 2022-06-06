@@ -83,10 +83,21 @@ const UserUpdateValidator = (req, res, next) => {
   }
 };
 
+const checkCorrectImage = (req, res, next) => {
+  try{
+    console.log('_________');
+    console.log(req.files);
+    console.log('_________');
+  }catch (e) {
+    next(e);
+  }
+}
+
 
 module.exports = {
+  checkDuplicatedEmail,
+  checkCorrectImage,
   getDynamicallyUser,
   validateUser,
-  checkDuplicatedEmail,
   UserUpdateValidator
 };

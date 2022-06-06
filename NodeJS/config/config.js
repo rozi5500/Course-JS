@@ -9,5 +9,11 @@ module.exports = {
   SENDER_EMAIL: process.env.SENDER_EMAIL,
   SENDER_EMAIL_PASSWORD: process.env.SENDER_EMAIL_PASSWORD,
 
-  FRONTEND_URL: 'http://localhost:3000'
+  FRONTEND_URL: 'http://localhost:3000',
+
+  S3_ACCESS_KEY: process.env.S3_ACCESS_KEY,
+  S3_SECRET_ACCESS_KEY: process.env.S3_SECRET_KEY,
+
+  S3_REGION: process.env.S3_REGION,
+  S3_BUCKET: process.env.S3_BUCKET
 };
