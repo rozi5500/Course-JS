@@ -29,7 +29,6 @@ authRouter.post('/password/forgot',
 );
 
 authRouter.patch('/password/reset',
-  auth_middleware.validateResetPass,
   auth_middleware.checkActionToken(actionTypesEnum.forgot_password),
   auth_controller.setNewPassword
 );

@@ -1,5 +1,5 @@
 const { authService } = require('../services');
-const { authValidator, emailValidator, passwordValidator, resetPassValidator } = require('../validators')
+const { authValidator, emailValidator, passwordValidator } = require('../validators')
 const { ApiError } = require('../error')
 const { OAuth, ActionToken } = require('../DataBase')
 const { tokenTypeEnum, codeStatus } = require('../constants')
@@ -123,21 +123,6 @@ function validatePassword(req, res, next) {
   }
 }
 
-function validateResetPass(req, res, next) {
-  try {
-    const { error } = resetPassValidator.resetPassSchema.validate(req.body);
-
-    if (error) {
-      next(new ApiError(error.details[0].message, codeStatus.bad_request_status));
-      return;
-    }
-
-    next()
-  } catch (e) {
-    next(e);
-  }
-}
-
 
 module.exports = {
   checkAccessToken,
@@ -145,6 +130,5 @@ module.exports = {
   checkRefreshToken,
   validateLogin,
   validateEmail,
-  validatePassword,
-  validateResetPass
+  validatePassword
 };
