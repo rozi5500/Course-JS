@@ -1,6 +1,8 @@
 const { User } = require('../DataBase');
 const { authService } = require('../services');
 const { codeStatus } = require('../constants')
+const { s3Service } = require('../services');
+
 
 const getAllUsers = async (req, res, next) => {
   try {
@@ -72,10 +74,25 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
+const uploadPhoto = async (req, res, next) => {
+  try{
+    const file = req.files.image;
+    const user = req.user;
+
+    const result = await s3Service.uploadFiles(file, 'user', user._id);
+
+    res.json(result)
+  }catch (e) {
+    next(e);
+  }
+}
+
+
 module.exports = {
   getAllUsers,
   getOneUserByID,
   updateUser,
   createUser,
-  deleteUser
+  deleteUser,
+  uploadPhoto
 };

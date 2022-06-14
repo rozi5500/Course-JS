@@ -1,7 +1,7 @@
 const { authService, emailService } = require('../services');
 const { OAuth, ActionToken, User } = require('../DataBase');
 const { actionTypesEnum, emailActionsEnum } = require('../constants')
-const { FRONTEND_URL, EMAIL_RECEIVER } = require("../config/config");
+const { FRONTEND_URL } = require("../config/config");
 
 const login = async (req, res, next) => {
   try {
@@ -73,20 +73,16 @@ function forgetPassword(email_receiver) {
     try {
       const { user } = req;
 
-      // Генеруємо Action Token
       const token = authService.generateActionToken({ userId: user._id });
 
-      // Створюємо в колекцію actionToken юзера з action токеном і видом події
       await ActionToken.create({
         _user_id: user._id,
         token,
         actionType: actionTypesEnum.forgot_password
       })
 
-      // Генеруємо лінку для фронтенда яка прийде юзеру на почту
       const forgottenPassUrl = `${FRONTEND_URL}/password/forgot?token=${token}`;
 
-      // Відправляємо емеїл юзеру на почту з силкою для відновлення пароля
       await emailService.sendMail(email_receiver,
         emailActionsEnum.forgot_password,
         {

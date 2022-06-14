@@ -13,7 +13,7 @@ userRouter.post('/',
 
 userRouter.get('/', common_middleware.validateQuery, user_controller.getAllUsers);
 
-userRouter.all('/:UserId', user_middleware.getDynamicallyUser('UserId', reqValuesEnum.params, '_id'));
+userRouter.use('/:UserId', user_middleware.getDynamicallyUser('UserId', reqValuesEnum.params, '_id'));
 userRouter.get('/:UserId', user_controller.getOneUserByID);
 
 userRouter.patch('/:UserId',
@@ -23,6 +23,6 @@ userRouter.patch('/:UserId',
 
 userRouter.delete('/:UserId', user_controller.deleteUser);
 
-userRouter.patch('/:UserId/photo', user_middleware.checkCorrectImage)
+userRouter.post('/:UserId/photo', user_middleware.checkCorrectImage, user_controller.uploadPhoto)
 
 module.exports = userRouter;

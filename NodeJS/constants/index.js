@@ -9,4 +9,5 @@ module.exports = {
   tokenTypeEnum: require('./token-type_enum'),
   userPosEnum: require('./user_positions'),
   userErrorEnum: require('./enum_user_errors'),
+  fileProp: require('./file_properties')
 };

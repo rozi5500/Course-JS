@@ -1,7 +1,7 @@
 const { ApiError } = require('../error');
 const { User } = require('../DataBase');
 const { userValidator, updateUserValidator } = require('../validators');
-const { userErrorEnum, codeStatus } = require('../constants')
+const { userErrorEnum, codeStatus, fileProp, commonErrorEnum } = require('../constants')
 
 
 const checkDuplicatedEmail = async (req, res, next) => {
@@ -85,9 +85,26 @@ const UserUpdateValidator = (req, res, next) => {
 
 const checkCorrectImage = (req, res, next) => {
   try{
-    console.log('_________');
-    console.log(req.files);
-    console.log('_________');
+    const file = req.files;
+    const maxSizeMB = fileProp.MAX_SIZE_IMAGE / 1024 / 1024;
+    const { size, mimetype } = file.image;
+
+    if (!file || !file.image) {
+      next(new ApiError(commonErrorEnum.NoFile, codeStatus.bad_request_status));
+      return;
+    }
+
+    if (!fileProp.IMAGE_MIMETYPES.includes(mimetype)){
+      next(new ApiError(commonErrorEnum.WrongImageType, codeStatus.bad_request_status));
+      return;
+    }
+
+    if(size > fileProp.MAX_SIZE_IMAGE){
+      next(new ApiError(`Image size can not be more than ${maxSizeMB} MB`, codeStatus.bad_request_status));
+      return;
+    }
+
+    next()
   }catch (e) {
     next(e);
   }

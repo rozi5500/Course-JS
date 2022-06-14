@@ -1,0 +1,122 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Hebron Course",
+    "version": "0.0.1",
+    "description": "Hebron Course swagger documentation Node JS"
+  },
+  "paths": {
+    "/users": {
+      "get": {
+        "description": "Get all users",
+        "operationId": "GetAllUsers",
+        "responses": {
+          "200": {
+            "description": "Return users from Data Base",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "400": {
+            "description": "Return Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a new user",
+        "operationId": "CreateNewUser",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "name",
+            "in": "formData",
+            "default": "Wasim",
+            "required": true
+          },
+          {
+            "type": "number",
+            "name": "age",
+            "in": "formData",
+            "default": 19
+          },
+          {
+            "type": "string",
+            "name": "email",
+            "in": "formData",
+            "default": "example@gmail.com",
+            "required": true
+          },
+          {
+            "type": "string",
+            "name": "password",
+            "in": "formData",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Create user",
+            "schema": {
+              "$ref": "#definitions/User"
+            }
+          },
+          "400": {
+            "description": "Return Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Wasim"
+        },
+        "age": {
+          "type": "number",
+          "example": 19
+        },
+        "email": {
+          "type": "string",
+          "example": "example@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "examplePassword!"
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Email is not valid"
+        },
+        "data": {
+          "description": "customer email",
+          "type": "string",
+          "example": "admin@hebronsoft.com"
+        },
+        "customCode": {
+          "description": "Custom error",
+          "type": "number",
+          "example": 401
+        }
+      }
+    }
+  }
+}
+
