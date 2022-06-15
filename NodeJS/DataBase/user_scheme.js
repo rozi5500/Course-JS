@@ -10,14 +10,25 @@ const User = new Schema({
   age: { type: Number, default: 24 },
   gender: { type: String, trim: true, lowercase: true },
   password: { type: String, required: true, default: '', select: false }
-}, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
+},
+{
+  timestamps: true,
+  toJSON:
+    {
+      virtuals: true,
+      transform: deletePassword
+    },
+  toObject:
+    { virtuals: true ,
+      transform: deletePassword
+    }
+});
 
 User.virtual('capsName').get(function() {
   return this.name.toUpperCase()
 })
 
-// statics прописуються коли не хватає стандартних методів типу: findOne і т.д
-User.statics = { // for schema / This - schema
+User.statics = {
   async createUserWithHashPass(user) {
     const hashPass = await authService.hashPassword(user.password)
 
@@ -25,6 +36,21 @@ User.statics = { // for schema / This - schema
   }
 }
 
+User.methods = {
+  hidePassword: () => {
+    const user = this.toObject();
+
+    delete user.password;
+
+    return user;
+  }
+}
+
 
 module.exports = model('User', User);
 
+function deletePassword(doc, ret) {
+  delete ret.password;
+
+  return ret;
+}
