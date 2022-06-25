@@ -4,7 +4,7 @@ db.getCollection('teacher').find({ lesson: 'basic', payment: 2100 })
 
 // filter
 db.getCollection('teacher').find(
-    { lesson: 'basic', payment: 2100 }, // Компа після "lesson: 'basic'" означає and 
+    { lesson: 'basic', payment: 2100 }, // Кома після "lesson: 'basic'" означає and
     { lesson: 1, name: 1, _id: 0 } // Фільтрація 
 )
 
@@ -33,15 +33,15 @@ db.getCollection('teacher').find({ name: /vna$/i }) // == %vna in SQL
 
 db.getCollection('teacher').find({ name: /.*tor.*/i }) // == %tor% in SQL 
 
-db.getCollection('teacher').find({}).sort({ payment: 1, name: -1 }) // Сортування, сотрувати можливо не тільки по одному полю
+db.getCollection('teacher').find({}).sort({ payment: 1, name: -1 }) // Сортування, сортувати можливо не тільки по одному полю
 
 db.getCollection('teacher').find({}).sort({ payment: -1 }).limit(2).skip(4) // Оффсети
 
 db.getCollection('teacher').find({ payment: { $exists: true } }).sort({ payment: 1 }) // Якщо payment існує - сорртуй
 
-db.getCollection('teacher').find({ payment: { $gte: 2500 } }) // payment >= 2500; greater than equels
+db.getCollection('teacher').find({ payment: { $gte: 2500 } }) // payment >= 2500; greater than equals
 
-db.getCollection('teacher').find({ payment: { $lte: 2500 } }) // payment <= 2500; less than equels
+db.getCollection('teacher').find({ payment: { $lte: 2500 } }) // payment <= 2500; less than equals
 
 db.getCollection('teacher').find({ payment: { $gt: 2500 } }) // payment > 2500; greater than
 

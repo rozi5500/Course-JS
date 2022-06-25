@@ -37,10 +37,10 @@ var partsOfBody;
     partsOfBody[partsOfBody["leftLeg"] = 8] = "leftLeg";
 })(partsOfBody || (partsOfBody = {}));
 // таким чином можемо доступатись до енамки по індексу та отримати ключ
-partsOfBody[2];
-partsOfBody[4];
-partsOfBody.rightLeg;
-partsOfBody.leftLeg;
+// partsOfBody[2]
+// partsOfBody[4]
+// partsOfBody.rightLeg
+// partsOfBody.leftLeg
 // Argument type
 var createPassword = function (name, age) {
     return "".concat(name).concat(age);

@@ -9,7 +9,7 @@ body {
     margin-right: 200px;
 }
 h1 {
-    color: RGBA (255, 99, 71, 0,5);
+    color: rgba(10, 50, 30, 0.5);
     text-align: center;
     border: 2px solid Tomato;
     margin-top: 50px;

@@ -71,7 +71,7 @@ const createPassword = (name: string = 'User', age?: number) => {
 }
 
 // Створення кастомного типа на практиці, щоб не повторювати код
-// І в user є поле company а в admin замість цього поля функція, тому
+// І в user є поле company, а в admin замість цього поля функція, тому
 // Записуємо таким чином в type smth?: type
 type Human = {
   name: string,
@@ -97,13 +97,13 @@ const admin: Human = {
 }
 
 class User {
-  // Тут ми описуємо властивості класа
-  public name: string // public стоїть по дефолту. Це означає що до цієї властивості можна отримати свободний доступ
-  private age: number // private не може бути доступний за межами класа
+  // Тут ми описуємо властивості класу
+  public name: string // public стоїть по дефолту. Це означає що до цієї властивості можна отримати вільний доступ
+  private age: number // private не може бути доступний за межами класу
   protected company: boolean // protected доступ до елементів з цим модифікатором можуть отримати тільки спадкоємці
   readonly pass: string // readonly тільки доступний для прочитання
 
-  // Тут ми добавляємо можливість приймати ці властивості при ініціалізації
+  // Тут ми додаємо можливість приймати ці властивості при ініціалізації
   constructor(name: string, age: number, company: boolean, pass: string) {
     this.name = name;
     this.age = age;
@@ -188,8 +188,8 @@ class Tolik implements Admin{
 // Generic type - синтаксис за допомогою якого тип змінної замість T підставиться автоматично
 const getter = <T>(data: T): T => data;
 
-// Тут замість Т буде string і таким чином ми можем взяти s.length
-const s = getter('fsfsrs');
+// Тут замість Т буде string і таким чином ми можемо взяти s.length
+const s = getter('test string');
 console.log(s.length)
 
 // А тут замість Т буде тип number і синтаксис JS не дає нам взяти length

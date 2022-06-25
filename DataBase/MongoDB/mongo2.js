@@ -12,7 +12,7 @@ db.getCollection('teacher').aggregate([
 db.getCollection('teacher').aggregate([
     {
         $group: {
-            _id: '$payment', // Поле "_id" по якому групуются елементи
+            _id: '$payment', // Поле "_id" по якому групуються елементи
             countOfTeachers: { $sum: 1 } // Рахує скільки об'єктів з таким значенням "payment"
         }
     }, // Ці данні передаются в нижню функцію 
@@ -32,10 +32,10 @@ db.getCollection('teacher').aggregate([
 // $lookup
 db.getCollection('teacher').aggregate([
     {
-        $lookup: { // Зд'єднує таблиці(коллекції в mongo) між собою анаглог join в SQL 
-            from: 'students', // До якої коллекції підключатись
+        $lookup: { // З'єднує таблиці(колекції в mongo) між собою аналог join в SQL
+            from: 'students', // До якої колекції підключатись
             localField: 'class_curator', // Поле по якому з'єднуватись з другою таблицею і яке є локальне
-            foreignField: 'class', // Поле з коллекції яку приєднуєм
+            foreignField: 'class', // Поле з колекції яку приєднуємо
             as: 'kids' // Як назвати 
         }
     }
@@ -65,7 +65,7 @@ db.getCollection('teacher').aggregate([
 ])
 
 
-// $unwind розбиває елменти по об'єктам
+// $unwind розбиває елементи по об'єктах
 db.getCollection('teacher').aggregate([
     {
         $match: {
