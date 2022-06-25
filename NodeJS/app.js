@@ -4,17 +4,23 @@ const { engine } = require('express-handlebars');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const swagger = require('swagger-ui-express');
+const socketIO = require('socket.io');
+const http = require('http');
 
 dotenv.config();
 
 const { ApiError } = require('./error');
-const { authRouter, carRouter, userRouter } = require('./routers');
+const { authRouter, carRouter, userRouter, socketRouter } = require('./routers');
 const { PORT, MONGO_URL, NODE_ENV } = require('./config/config');
 const { codeStatus, commonErrorEnum } = require('./constants')
 const cronRuner = require('./cron')
 const swaggerJson = require('./swagger.json')
 
 const app = express();
+const server = http.createServer(app)
+const io = socketIO(server, { cors: { origin: '*' } });
+
+io.on('connection', (socket) => socketRouter(io, socket))
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -29,7 +35,7 @@ mongoose.connect(MONGO_URL).then(() => {
 
 app.use(fileUpload({}));
 
-if(NODE_ENV === 'stage'){
+if (NODE_ENV === 'stage') {
   const morgan = require('morgan');
   app.use(morgan('dev'));
 }
@@ -55,8 +61,8 @@ function _MainErrorHandler(err, req, res, next) {
     })
 }
 
-app.listen(PORT, () => {
-  console.log(`Server is listening ${PORT} PORT`);
+server.listen(PORT, () => {
+  console.log(`Server is listening ${ PORT } PORT`);
 
   cronRuner()
 });

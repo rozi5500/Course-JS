@@ -30,6 +30,7 @@ function builderFilePath(fileName, itemType, itemId) {
   return `${ itemType }/${ itemId }/${ v4() }.${ fileType }`
 }
 
+
 module.exports = {
-  uploadFiles
+  uploadFiles,
 };

@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
-const { authService } = require('../services')
-
+const authService = require('../services/auth_service')
 const { userPosEnum } = require('../constants');
 
 const User = new Schema({
@@ -49,6 +48,8 @@ User.methods = {
 
 module.exports = model('User', User);
 
+
+// doc - монгівський об'єкт, ret - JS об'єкт
 function deletePassword(doc, ret) {
   delete ret.password;
 

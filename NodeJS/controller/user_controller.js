@@ -1,28 +1,13 @@
 const { User } = require('../DataBase');
-const { authService } = require('../services');
 const { codeStatus } = require('../constants')
-const { s3Service, filterService } = require('../services');
+const { authService, s3Service, filterService } = require('../services');
 
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const { limit, page } = req.query;
+    const filteredResult = await filterService.filterUsers(req.query);
 
-    const skip = (page - 1) * limit;
-
-    const filterSearching = filterService.test();
-    console.log(filterSearching);
-
-
-    const pagedUsers = await User.find().limit(limit).skip(skip);
-    const countAllElem = await User.count({});
-
-    res.json({
-      page,
-      limitElementsOnPage: limit,
-      data: pagedUsers,
-      countAllElem
-    });
+    res.json(filteredResult)
 
   } catch (e) {
     next(e);

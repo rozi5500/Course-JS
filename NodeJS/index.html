@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+            integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+<button id="24"> Send message</button>
+<button id="25">Broadcast Test</button>
+<button id="26">Broadcast With Avoiding Sender</button>
+
+<script>
+  const elementById = document.getElementById('24')
+  const broadcast = document.getElementById('25')
+  const broadcastAvoidSender = document.getElementById('26')
+
+  const socket = io('http://localhost:5000', { query: 'cameL=101&page=2'});
+
+  elementById.onclick = () => {
+    socket.emit('message:created', { name: 'Oleksiy' })
+  }
+
+  broadcast.onclick = () => {
+    socket.emit('broadcast:all:users', {})
+  }
+
+  broadcastAvoidSender.onclick = () => {
+    socket.emit('broadcast:avoid:sender', {})
+  }
+
+  socket.on('message:saved', (data) => {
+    console.log(data, 'data');
+  })
+
+  socket.on('broadcast:test', () => {
+    document.write('Hello all users')
+  })
+
+  socket.on('broadcast:not:me', () => {
+    document.write('Avoid sender')
+  })
+
+
+</script>
+
+</body>
+</html>
