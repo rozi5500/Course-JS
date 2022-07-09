@@ -1,4 +1,1 @@
-module.exports = {
-  ACCESS: 'access',
-  REFRESH: 'refresh'
-};
+module.exports = require('Course-JS-SharedModules/constants/token-type_enum')

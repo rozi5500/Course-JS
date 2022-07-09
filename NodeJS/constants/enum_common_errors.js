@@ -1,6 +1,1 @@
-module.exports = {
-  NotFound: 'Not Found',
-  InvalidToken: 'Invalid token',
-  NoFile: 'No file',
-  WrongImageType: 'Wrong image type'
-};
+module.exports = require('Course-JS-SharedModules/constants/enum_common_errors')

@@ -1,6 +1,1 @@
-module.exports = {
-  welcome: 'welcome',
-  carArrived: 'car-arrived',
-  forgot_password: 'ForgotPassword'
-};
-
+module.exports = require('Course-JS-SharedModules/constants/email_actions_enum')

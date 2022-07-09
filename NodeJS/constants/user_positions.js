@@ -1,6 +1,1 @@
-module.exports = {
-  TRAINEE: 'trainee',
-  MIDDLE: 'middle',
-  TEAMLEAD: 'teamlead',
-  BOSS: 'boss'
-};
+module.exports = require('Course-JS-SharedModules/constants/user_positions')

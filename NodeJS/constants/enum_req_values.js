@@ -1,5 +1,1 @@
-module.exports = {
-  body: 'body',
-  params: 'params',
-  query: 'query'
-};
+module.exports = require('Course-JS-SharedModules/constants/enum_req_values')

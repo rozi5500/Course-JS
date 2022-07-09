@@ -1,4 +1,1 @@
-module.exports = {
-  OccupiedModel: 'This model is occupied',
-  NotFoundCar: 'Car is not found'
-};
+module.exports = require('Course-JS-SharedModules/constants/enum_car_errors')

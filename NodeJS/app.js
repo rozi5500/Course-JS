@@ -1,7 +1,7 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const { engine } = require('express-handlebars');
-const mongoose = require('mongoose');
+const mongoose = require('Course-JS-SharedModules/dependencies');
 const dotenv = require('dotenv');
 const swagger = require('swagger-ui-express');
 const socketIO = require('socket.io');

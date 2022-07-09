@@ -1,6 +1,1 @@
-module.exports = {
-  NotValidID: 'Not valid User Id',
-  NotFoundUser: 'User is not found',
-  OccupiedEmail: 'This email is occupied',
-  WrongPassword: 'The password is not correct',
-};
+module.exports = require('Course-JS-SharedModules/constants/enum_user_errors')

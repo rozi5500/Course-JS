@@ -1,3 +1,1 @@
-module.exports = {
-  forgot_password: 'forgotPassword'
-};
+module.exports = require('Course-JS-SharedModules/constants/action_types_enum')
